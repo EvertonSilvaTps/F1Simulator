@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace F1Simulator.RaceControlService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/race")]
     [ApiController]
     public class RaceControlController : ControllerBase
     {
