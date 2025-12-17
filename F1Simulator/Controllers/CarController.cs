@@ -1,8 +1,8 @@
 ﻿using F1Simulator.Models.DTOs.TeamManegementService.CarDTO;
 using F1Simulator.Models.Models.TeamManegement;
 using F1Simulator.TeamManagementService.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace F1Simulator.TeamManagementService.Controllers
 {
@@ -20,46 +20,14 @@ namespace F1Simulator.TeamManagementService.Controllers
         }
 
 
-
         [HttpPost]
         public async Task<ActionResult> CreateCarAsync(Car car)
         {
             try
             {
-                _carService.CreateCarAsync(car);
-            }
-            catch (Exception ex)
-            {
+                await _carService.CreateCarAsync(car);
 
-                throw;
-            }
-        }
-
-
-        [HttpGet]
-        public async Task GetAllCarAsync(string id)
-        {
-            try
-            {
-                _carService.GetAllCarAsync(id);
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-
-
-
-        [HttpGet("{carId}")]
-        public async Task<ActionResult<CarResponseDTO> GetCarByIdAsync(string carId)
-        {
-            try
-            {
-                var car = await _carService.GetCarByIdAsync(carId);
-
-
+                return Created();
             }
             catch (Exception ex)
             {
@@ -69,6 +37,44 @@ namespace F1Simulator.TeamManagementService.Controllers
             }
         }
 
+
+        [HttpGet]
+        public async Task<ActionResult<List<CarResponseDTO>>> GetAllCarAsync(string id)
+        {
+            try
+            {
+                var cars = await _carService.GetAllCarAsync(id);
+
+                if (cars.IsNullOrEmpty())
+                    return NoContent();
+
+                return Ok(cars);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while searching for the car.");
+
+                return Problem(ex.Message);
+            }
+        }
+
+
+        [HttpGet("{carId}")]
+        public async Task<ActionResult<CarResponseDTO>> GetCarByIdAsync(string carId)
+        {
+            try
+            {
+                var car = await _carService.GetCarByIdAsync(carId);
+
+                return Ok(car);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while searching for the car.");
+
+                return Problem(ex.Message);
+            }
+        }
 
 
         [HttpPut("{carId}")]
@@ -87,7 +93,6 @@ namespace F1Simulator.TeamManagementService.Controllers
                 return Problem(ex.Message);
             }
         }
-
 
     }
 }
