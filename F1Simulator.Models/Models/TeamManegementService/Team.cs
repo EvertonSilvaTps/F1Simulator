@@ -11,6 +11,5 @@ namespace F1Simulator.Models.Models.TeamManegement
         public string Name { get; set; }
         public string NameAcronym { get; set; }
         public string Country { get; set; }
-        public bool IsActive { get; set; } = true;
     }
 }

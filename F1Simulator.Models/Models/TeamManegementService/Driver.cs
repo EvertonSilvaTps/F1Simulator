@@ -12,8 +12,8 @@ namespace F1Simulator.Models.Models.TeamManegement
         public string FirstName { get; set; }
         public string FullName { get; set; }
         public string NameAcronym { get; set; }
-        public decimal WeightKg { get; set; }
-        public decimal HandiCap { get; set; }
+        public double WeightKg { get; set; }
+        public double HandiCap { get; set; }
         public bool IsActive { get; set; } = true;
     }
 }
