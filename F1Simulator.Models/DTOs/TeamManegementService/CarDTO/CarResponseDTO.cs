@@ -6,13 +6,12 @@ namespace F1Simulator.Models.DTOs.TeamManegementService.CarDTO
 {
     public class CarResponseDTO
     {
-        public Guid CarId { get; set; }
-        public Guid TeamId { get; set; }
+        public string CarId { get; set; }
+        public string TeamId { get; set; }
         public string Model { get; set; }
-        public decimal WeightKg { get; set; }
+        public double WeightKg { get; set; }
         public int Speed { get; set; }
-        public decimal Ca { get; set; }
-        public decimal Cp { get; set; }
-        public bool IsActive { get; set; } 
+        public double Ca { get; set; }
+        public double Cp { get; set; }
     }
 }

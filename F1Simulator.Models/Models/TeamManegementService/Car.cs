@@ -9,10 +9,9 @@ namespace F1Simulator.Models.Models.TeamManegement
         public Guid CarId { get; set; }
         public Guid TeamId { get; set; }
         public string Model { get; set; }
-        public decimal WeightKg { get; set; }
+        public double WeightKg { get; set; }
         public int Speed { get; set; }
-        public decimal Ca { get; set; }
-        public decimal Cp { get; set; }
-        public bool IsActive { get; set; } = true;
+        public double Ca { get; set; }
+        public double Cp { get; set; }
     }
 }

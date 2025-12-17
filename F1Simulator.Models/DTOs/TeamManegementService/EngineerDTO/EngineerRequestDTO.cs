@@ -7,8 +7,8 @@ namespace F1Simulator.Models.DTOs.TeamManegementService.EngineerDTO
 {
     public class EngineerRequestDTO
     {
-        public Guid TeamId { get; set; }
-        public Guid CarId { get; set; }
+        public string TeamId { get; set; }
+        public string CarId { get; set; }
         public string FirstName { get; set; }
         public string FullName { get; set; }
         public Specialization EngineerSpecialization { get; set; }
