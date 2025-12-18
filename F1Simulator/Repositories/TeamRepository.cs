@@ -2,12 +2,13 @@
 using F1Simulator.Models.DTOs.TeamManegementService.TeamDTO;
 using F1Simulator.Models.Models.TeamManegement;
 using F1Simulator.TeamManagementService.Data;
+using F1Simulator.TeamManagementService.Repositories.Interfaces;
 using F1Simulator.TeamManagementService.Services;
 using Microsoft.Data.SqlClient;
 
 namespace F1Simulator.TeamManagementService.Repositories
 {
-    public class TeamRepository
+    public class TeamRepository : ITeamRepository
     {
         private readonly TeamManagementServiceConnection _connection;
         public TeamRepository(TeamManagementServiceConnection connection)
