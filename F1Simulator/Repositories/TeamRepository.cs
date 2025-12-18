@@ -4,25 +4,26 @@ using F1Simulator.Models.Models.TeamManegement;
 using F1Simulator.TeamManagementService.Data;
 using F1Simulator.TeamManagementService.Repositories.Interfaces;
 using F1Simulator.TeamManagementService.Services;
+using F1Simulator.Utils.DatabaseConnectionFactory;
 using Microsoft.Data.SqlClient;
 
 namespace F1Simulator.TeamManagementService.Repositories
 {
     public class TeamRepository : ITeamRepository
     {
-        private readonly TeamManagementServiceConnection _connection;
-        public TeamRepository(TeamManagementServiceConnection connection)
+        private readonly SqlConnection _connection;
+        public TeamRepository(IDatabaseConnection<SqlConnection> connection)
         {
-            _connection = connection;
+            _connection = connection.Connect();
         }
 
         public async Task<int> GetTeamsCountAsync()
         {
-            using var connection = _connection.GetConnection();
+           
 
             var sql = @"SELECT COUNT(*) FROM Teams";
 
-            return await connection.ExecuteScalarAsync<int>(sql);
+            return await _connection.ExecuteScalarAsync<int>(sql);
         }
 
         public async Task CreateTeamAsync(Team team)
@@ -30,17 +31,15 @@ namespace F1Simulator.TeamManagementService.Repositories
             var query = "INSERT INTO Teams (TeamId, Name, NameAcronym, Country) " +
                         "VALUES (@TeamId, @Name, @NameAcronym, @Country)";
 
-            using var connection = _connection.GetConnection();
-            await connection.ExecuteAsync(query, team);
+            await _connection.ExecuteAsync(query, team);
         }
 
         public async Task<IEnumerable<TeamResponseDTO>> GetAllTeamsAsync()
         {
-                using var connection = _connection.GetConnection();
                 var query = @"SELECT TeamId, Name, NameAcronym, Country
                           FROM Teams";
 
-                return await connection.QueryAsync<TeamResponseDTO>(query);           
+                return await _connection.QueryAsync<TeamResponseDTO>(query);           
         }
 
         public async Task<TeamResponseDTO> GetTeamByIdAsync(Guid teamId)
@@ -55,7 +54,6 @@ namespace F1Simulator.TeamManagementService.Repositories
 
         public async Task<TeamResponseDTO> GetTeamByNameAsync(string name)
         {
-                using var connection = _connection.GetConnection();
                 var query = @"SELECT TeamId, Name, NameAcronym, Country
                           FROM Teams
                           WHERE Name = @Name";
