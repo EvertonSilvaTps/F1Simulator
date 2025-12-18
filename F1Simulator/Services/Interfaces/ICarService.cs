@@ -11,5 +11,7 @@ namespace F1Simulator.TeamManagementService.Services.Interfaces
         Task<CarResponseDTO> GetCarByIdAsync(string id);
 
         Task UpdateCarCoefficientsAsync(CarUpdateDTO carUpdate, string carId);
+
+        Task UpdateCarModelAsync(CarModelUpdateDTO carModelUpdate, string carId);
     }
 }

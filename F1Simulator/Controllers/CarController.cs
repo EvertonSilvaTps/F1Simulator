@@ -84,7 +84,7 @@ namespace F1Simulator.TeamManagementService.Controllers
         }
 
 
-        [HttpPut("{carId}")]
+        [HttpPut("{carId}/coefficients")]
         public async Task<IActionResult> UpdateCarCoefficientsAsync(CarUpdateDTO carUpdate, string carId)
         {
             try
@@ -100,6 +100,25 @@ namespace F1Simulator.TeamManagementService.Controllers
                 return Problem(ex.Message);
             }
         }
+
+
+        [HttpPatch("{carId}/model")]
+        public async Task<IActionResult> UpdateCarModelAsync(CarModelUpdateDTO carModelUpdate, string carId)
+        {
+            try
+            {
+                await _carService.UpdateCarModelAsync(carModelUpdate, carId);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while updating the model.");
+
+                return Problem(ex.Message);
+            }
+        }
+
 
     }
 }

@@ -87,5 +87,23 @@ namespace F1Simulator.TeamManagementService.Repositories
             }
         }
 
+
+        public async Task UpdateCarModelAsync(CarModelUpdateDTO carModelUpdate, string carId)
+        {
+            try
+            {
+                var sql = @"UPDATE [Cars] 
+                            SET Model = @Model 
+                            WHERE [CarId] = @CarId";
+
+                await _connection.ExecuteAsync(sql, new { carModelUpdate.Model, CarId = carId });
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Error querying the database.", ex);
+            }
+        }
+
+
     }
 }
