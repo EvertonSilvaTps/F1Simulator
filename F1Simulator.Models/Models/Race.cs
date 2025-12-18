@@ -12,6 +12,12 @@ namespace F1Simulator.Models.Models
         public Guid CircuitId { get; private set; }
         public int Round { get; private set; }
         public string Status { get; private set; }
+        public bool T1 { get; private set; }
+        public bool T2 { get; private set; }
+        public bool T3 { get; private set; }
+        public bool Qualifier { get; private set; }
+        public bool RaceFinal { get; private set; }
+
 
         public Race(Guid seasonId, Guid circuitId, int round)
         {
@@ -20,6 +26,11 @@ namespace F1Simulator.Models.Models
             CircuitId = circuitId;
             Round = round;
             Status = RaceStatus.Pending.ToString();
+            T1 = false;
+            T2 = false;
+            T3 = false;
+            Qualifier = false;
+            RaceFinal = false;
         }
     }
 }

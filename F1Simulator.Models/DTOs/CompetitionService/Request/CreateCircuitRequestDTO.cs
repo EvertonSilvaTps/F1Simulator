@@ -8,6 +8,6 @@ namespace F1Simulator.Models.DTOs.CompetitionService.Request
     {
         public string Name { get; init; }
         public string Country { get; init; }     
-        public int NumberOfLaps { get; init; }       
+        public int LapsNumber { get; init; }       
     }
 }
