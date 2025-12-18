@@ -32,6 +32,13 @@ namespace F1Simulator.TeamManagementService.Services
                 throw;
             }
         }
+        private static string GenerateAcronym(string name)
+        {
+            if (name is null || name.Length < 3)
+                throw new Exception("Team name must have at least 3 characters!");
+
+            return name.Trim().Substring(0, 3).ToUpperInvariant();
+        }
         public async Task CreateTeamAsync(TeamRequestDTO teamRequestDto)
         {
             try
@@ -45,11 +52,13 @@ namespace F1Simulator.TeamManagementService.Services
                 if (existingTeam is not null)
                     throw new Exception("Team is already exists!");
 
+                var acronym = GenerateAcronym(teamRequestDto.Name);
+
                 var team = new Team
                 {
                     TeamId = Guid.NewGuid(),
-                    Name = teamRequestDto.Name,
-                    NameAcronym = teamRequestDto.NameAcronym,
+                    Name = teamRequestDto.Name.Trim(),
+                    NameAcronym = acronym,
                     Country = teamRequestDto.Country
                 };
 
@@ -58,6 +67,7 @@ namespace F1Simulator.TeamManagementService.Services
             catch(Exception ex)
             {
                 _logger.LogError($"An error occurred while creating the team: {ex.Message}", ex);
+                throw;
             }
         }
 
