@@ -35,7 +35,7 @@ namespace F1Simulator.TeamManagementService.Repositories
         }
 
 
-        public async Task<List<CarResponseDTO>> GetAllCarAsync(string id)
+        public async Task<List<CarResponseDTO>> GetAllCarAsync()
         {
             try
             {
