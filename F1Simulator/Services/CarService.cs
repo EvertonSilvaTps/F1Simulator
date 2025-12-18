@@ -8,11 +8,13 @@ namespace F1Simulator.TeamManagementService.Services
     public class CarService : ICarService
     {
         private ICarRepository _carRepository;
+        private ITeamRepository _teamRepository;
         private readonly Random _random = Random.Shared;
 
-        public CarService(ICarRepository carRepository)
+        public CarService(ICarRepository carRepository, ITeamRepository teamRepository)
         {
             _carRepository = carRepository;
+            _teamRepository = teamRepository;
         }
 
 
@@ -33,7 +35,7 @@ namespace F1Simulator.TeamManagementService.Services
             if (car.Speed <= 0)
                 throw new ArgumentException("Speed must be greater than zero.");
 
-            var team = await _carRepository.GetTeamByIdAsync(car.TeamId);
+            var team = await _teamRepository.GetTeamByIdAsync(car.TeamId);
             
             if (team is null)
                 throw new ArgumentException("Team does not exist for the provided TeamId.");

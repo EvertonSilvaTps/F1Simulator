@@ -14,7 +14,5 @@ namespace F1Simulator.TeamManagementService.Repositories.Interfaces
 
         Task UpdateCarCoefficientsAsync(CarUpdateDTO carUpdate, string carId);
 
-        Task<TeamResponseDTO> GetTeamByIdAsync(string teamId);
-
     }
 }
