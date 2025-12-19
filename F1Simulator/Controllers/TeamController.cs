@@ -60,7 +60,10 @@ namespace F1Simulator.TeamManagementService.Controllers
             {
                 var teams = await _teamService.GetAllTeamsAsync();
 
-                return teams is null ? NotFound() : Ok(teams);
+                if (teams is null || teams.Count == 0)
+                    return NoContent();
+                
+                return Ok(teams);
             }
             catch (Exception ex)
             {

@@ -6,6 +6,7 @@ using F1Simulator.TeamManagementService.Services;
 using F1Simulator.TeamManagementService.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace F1Simulator.TeamManagementService.Controllers
 {
@@ -61,10 +62,10 @@ namespace F1Simulator.TeamManagementService.Controllers
             {
                 var boss = await _bossService.GetAllBossesAsync();
 
-                if (boss is null)
+                if (boss is null || boss.Count == 0)
                     return NoContent();
 
-                return boss is null ? NotFound() : Ok(boss);
+                return Ok(boss);
             }
             catch(Exception ex)
             {
