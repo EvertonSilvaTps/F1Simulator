@@ -21,5 +21,20 @@ namespace F1Simulator.RaceControlService.Controllers
             _logger = logger;
             _raceControlService = raceControlService;
         }
+
+        [HttpPost("{raceId}/simulate/race")]
+        public async Task<ActionResult<List<DriverGridFinalRaceResponseDTO>>> ExecuteRaceSectionAsync([FromRoute] string raceId)
+        {
+            try
+            {
+                var result = await _raceControlService.ExecuteRaceSectionAsync(raceId);
+                return StatusCode(StatusCodes.Status201Created,  result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occurred while request 'ExecuteRace' endpoint", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred." } );
+            }
+        }
     }
 }

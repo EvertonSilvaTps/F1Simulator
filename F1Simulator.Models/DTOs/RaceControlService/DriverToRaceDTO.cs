@@ -1,6 +1,6 @@
-﻿namespace F1Simulator.Models.Models.RaceControlService
+﻿namespace F1Simulator.Models.DTOs.RaceControlService
 {
-    public class DriverToQueueDTO
+    public class DriverToRaceDTO
     {
         public string DriverId { get; init; }
         public string DriverName { get; init; }

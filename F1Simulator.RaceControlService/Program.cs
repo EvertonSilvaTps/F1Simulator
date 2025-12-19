@@ -1,4 +1,3 @@
-using F1Simulator.RaceControlService.Consumers;
 using F1Simulator.RaceControlService.Messaging;
 using F1Simulator.RaceControlService.Repositories;
 using F1Simulator.RaceControlService.Repositories.Interfaces;

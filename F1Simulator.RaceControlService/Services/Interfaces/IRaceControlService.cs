@@ -8,6 +8,6 @@ namespace F1Simulator.RaceControlService.Services.Interfaces
         Task ExecuteTlTwoSectionAsync(string raceId);
         Task ExecuteTlThreeSectionAsync(string raceId);
         Task ExecuteQualifierSectionAsync(string raceId);
-        Task ExecuteRaceSectionAsync(string raceId);
+        Task<List<DriverGridFinalRaceResponseDTO>> ExecuteRaceSectionAsync(string raceId);
     }
 }
