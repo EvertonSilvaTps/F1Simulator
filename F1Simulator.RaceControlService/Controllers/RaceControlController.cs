@@ -30,6 +30,10 @@ namespace F1Simulator.RaceControlService.Controllers
                 var result = await _raceControlService.ExecuteTlOneSectionAsync(raceId);
                 return StatusCode(StatusCodes.Status201Created, result);
             }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = ex.Message });
+            }
             catch (Exception ex)
             {
                 _logger.LogError("Error occurred while request 'ExecuteTlOne' endpoint", ex);
@@ -44,6 +48,10 @@ namespace F1Simulator.RaceControlService.Controllers
             {
                 var result = await _raceControlService.ExecuteTlTwoSectionAsync(raceId);
                 return StatusCode(StatusCodes.Status201Created, result);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -60,6 +68,10 @@ namespace F1Simulator.RaceControlService.Controllers
                 var result = await _raceControlService.ExecuteTlThreeSectionAsync(raceId);
                 return StatusCode(StatusCodes.Status201Created, result);
             }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = ex.Message });
+            }
             catch (Exception ex)
             {
                 _logger.LogError("Error occurred while request 'ExecuteTlThree' endpoint", ex);
@@ -75,6 +87,10 @@ namespace F1Simulator.RaceControlService.Controllers
                 var result = await _raceControlService.ExecuteQualifierSectionAsync(raceId);
                 return StatusCode(StatusCodes.Status201Created, result);
             }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = ex.Message });
+            }
             catch (Exception ex)
             {
                 _logger.LogError("Error occurred while request 'ExecuteQualifier' endpoint", ex);
@@ -89,6 +105,10 @@ namespace F1Simulator.RaceControlService.Controllers
             {
                 var result = await _raceControlService.ExecuteRaceSectionAsync(raceId);
                 return StatusCode(StatusCodes.Status201Created,  result);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message =  ex.Message });
             }
             catch (Exception ex)
             {

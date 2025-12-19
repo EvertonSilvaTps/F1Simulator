@@ -3,12 +3,24 @@ using F1Simulator.RaceControlService.Repositories;
 using F1Simulator.RaceControlService.Repositories.Interfaces;
 using F1Simulator.RaceControlService.Services;
 using F1Simulator.RaceControlService.Services.Interfaces;
+using F1Simulator.Utils.DatabaseConnectionFactory;
+using F1Simulator.Utils.DatabaseConnectionFactory.Config;
+using F1Simulator.Utils.DatabaseConnectionFactory.Connections;
+using Microsoft.Data.SqlClient;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.Configure<MongoDBSettings>(
+    builder.Configuration.GetSection("MongoDB"));
+
+builder.Services.AddSingleton<MongoDBSettings>();
+
+builder.Services.AddSingleton<IDatabaseConnection<IMongoDatabase>, MongoConnection>();
 
 builder.Services.AddScoped<IRaceControlService, RaceControlService>();
 builder.Services.AddScoped<IRaceControlRepository, RaceControlRepository>();
