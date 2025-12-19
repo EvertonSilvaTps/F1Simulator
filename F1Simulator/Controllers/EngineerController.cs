@@ -96,31 +96,5 @@ namespace F1Simulator.TeamManagementService.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-
-        [HttpPatch("{id}")]
-        public async Task<ActionResult> UpdateEnginnerAsync([FromBody] EngineerUpdateRequestDTO engineerUpdateRequestDTO, [FromRoute] Guid id)
-        {
-            try
-            {
-                await _engineerService.UpdateActiveEngineer(engineerUpdateRequestDTO, id);
-                return NoContent();
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(400, new { message = ex.Message });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(409, new { message = ex.Message });
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return StatusCode(404, new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = ex.Message });
-            }
-        }
     }
 }
