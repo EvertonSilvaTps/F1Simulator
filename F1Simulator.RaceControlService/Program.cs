@@ -39,7 +39,7 @@ builder.Services.AddHttpClient("TeamManagementServicesDrivers", client =>
 
 builder.Services.AddHttpClient("CompetitionService", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:5001/api");
+    client.BaseAddress = new Uri("https://localhost:5001/api/competition");
 });
 
 var app = builder.Build();

@@ -156,5 +156,43 @@ namespace F1Simulator.RaceControlService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred." } );
             }
         }
+
+        [HttpGet("{raceId}")]
+        public async Task<ActionResult<RaceControlResponseDTO>> GetRaceByRaceIdAsync(Guid raceId)
+        {
+            try
+            {
+                var response = await _raceControlService.GetRaceByRaceIdAsync(raceId);
+                return StatusCode(StatusCodes.Status200OK, response);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new { Message =  ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occurred while request 'Get By RaceId' endpoint", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred." });
+            }
+        }
+
+        [HttpGet("season/{seasonYear}")]
+        public async Task<ActionResult<RaceControlResponseDTO>> GetRacesBySeasonYearAsync(int seasonYear)
+        {
+            try
+            {
+                var response = await _raceControlService.GetRacesBySeasonYearAsync(seasonYear);
+                return StatusCode(StatusCodes.Status200OK, response);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occurred while request 'Get By Season Year' endpoint", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred." });
+            }
+        }
     }
 }
