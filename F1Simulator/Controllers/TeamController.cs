@@ -40,11 +40,13 @@ namespace F1Simulator.TeamManagementService.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateTeamAsync([FromBody] TeamRequestDTO teamRequestDto)
         {
+            if (teamRequestDto is null)
+                return BadRequest("Request body is required!");
+
             try
             {
                 await _teamService.CreateTeamAsync(teamRequestDto);
-                _logger.LogInformation("Team sucessfully created!");
-                return Created();
+                return StatusCode(StatusCodes.Status201Created);
             }
             catch (Exception ex)
             {
