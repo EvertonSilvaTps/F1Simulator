@@ -1,4 +1,7 @@
-﻿using F1Simulator.Models.DTOs.TeamManegementService.DriverDTO;
+﻿using F1Simulator.Models.DTOs.RaceControlService;
+using F1Simulator.Models.DTOs.TeamManegementService.DriverDTO;
+using F1Simulator.TeamManagementService.Services.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace F1Simulator.TeamManagementService.Controllers
@@ -7,15 +10,34 @@ namespace F1Simulator.TeamManagementService.Controllers
     [ApiController]
     public class DriverController : ControllerBase
     {
+        private readonly IDriverService _driverService;
+        public DriverController(IDriverService driverService)
+        {
+            _driverService = driverService;
+        }
         [HttpPost]
         public async Task<ActionResult<DriverResponseDTO>> CreateDriverAsync([FromBody] DriverRequestDTO driverRequestDTO)
         {
             try
             {
-                return Ok();
-            } catch(Exception ex)
+                var driver = await _driverService.CreateDriverAsync(driverRequestDTO);
+                return StatusCode(201, driver);
+            }
+            catch (ArgumentException ex)
             {
-                throw new Exception(ex.Message); 
+                return StatusCode(400, new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
             }
         }
 
@@ -24,11 +46,54 @@ namespace F1Simulator.TeamManagementService.Controllers
         {
             try
             {
-                return Ok();
+                var drivers = await _driverService.GetDriversAsync();
+                if (drivers is null || drivers.Count == 0)
+                    return NoContent();
+                return Ok(drivers);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("race")]
+        public async Task<ActionResult<DriverToRaceDTO>> GetAllDriversToRaceAsync()
+        {
+            try
+            {
+                var drivers = await _driverService.GetDriversToRaceAsync();
+                if (drivers is null || drivers.Count == 0)
+                    return NoContent();
+                return Ok(drivers);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
             }
         }
 
@@ -37,23 +102,52 @@ namespace F1Simulator.TeamManagementService.Controllers
         {
             try
             {
-                return Ok();
+                var driver = await _driverService.GetDriverByIdAsync(id);
+                if (driver is null)
+                    return NoContent();
+                return Ok(driver);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return StatusCode(500, new { message = ex.Message });
             }
         }
 
-        public async Task<ActionResult<DriverResponseDTO>> UpdateDriverAsync([FromBody] DriverRequestDTO driverRequestDTO)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<DriverResponseDTO>> UpdateDriverAsync([FromBody] UpdateRequestDriverDTO driverRequestDTO, [FromRoute] Guid id)
         {
             try
             {
+                await _driverService.UpdateDriverAsync(id, driverRequestDTO);
                 return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return StatusCode(500, new { message = ex.Message });
             }
         }
     }

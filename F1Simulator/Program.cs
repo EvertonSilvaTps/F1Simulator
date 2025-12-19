@@ -6,12 +6,20 @@ using F1Simulator.TeamManagementService.Services.Interfaces;
 using F1Simulator.Utils.DatabaseConnectionFactory;
 using F1Simulator.Utils.DatabaseConnectionFactory.Connections;
 using Microsoft.Data.SqlClient;
+using System.Drawing;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(
+                        new JsonStringEnumConverter()
+                    );
+                });
 
 builder.Services.AddSingleton<IDatabaseConnection<SqlConnection>, SqlServerConnection>();
 
@@ -20,6 +28,9 @@ builder.Services.AddSingleton<IEngineerService, EngineerService>();
 
 builder.Services.AddSingleton<ITeamRepository, TeamRepository>();
 builder.Services.AddSingleton<ITeamService, TeamService>();
+
+builder.Services.AddSingleton<IBossRepository, BossRepository>();
+builder.Services.AddSingleton<IBossService, BossService>();
 
 builder.Services.AddSingleton<IDriverRepository, DriverRepository>();
 builder.Services.AddSingleton<IDriverService, DriverService>();

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace F1Simulator.TeamManagementService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/engineer")]
     [ApiController]
     public class EngineerController : ControllerBase
     {
@@ -21,12 +21,23 @@ namespace F1Simulator.TeamManagementService.Controllers
             try
             {
                 var engineer = await _engineerService.CreateEngineerAsync(engineerRequestDTO);
-                return Ok(engineer);
-
+                return StatusCode(201, engineer);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return StatusCode(500, new { message = ex.Message });
             }
         }
 
@@ -36,29 +47,53 @@ namespace F1Simulator.TeamManagementService.Controllers
             try
             {
                 var enginners = await _engineerService.GetAllEngineersAsync();
-                if (enginners is null)
-                    return NotFound();
+                if (enginners is null || enginners.Count == 0)
+                    return NoContent();
                 return Ok(enginners);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return StatusCode(500, new { message = ex.Message });
             }
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<EngineerResponseDTO>> GetEngineerByIdAsync([FromRoute] Guid id)
         {
             try
             {
                 var engineer = await _engineerService.GetEngineerByIdAsync(id);
                 if (engineer is null)
-                    return NotFound();
+                    return NoContent();
                 return Ok(engineer);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return StatusCode(500, new { message = ex.Message });
             }
         }
 
@@ -69,9 +104,22 @@ namespace F1Simulator.TeamManagementService.Controllers
             {
                 await _engineerService.UpdateActiveEngineer(engineerUpdateRequestDTO, id);
                 return NoContent();
-            } catch(Exception ex)
+            }
+            catch (ArgumentException ex)
             {
-                throw new Exception(ex.Message);
+                return StatusCode(400, new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
             }
         }
     }

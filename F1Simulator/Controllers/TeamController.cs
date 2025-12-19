@@ -4,6 +4,7 @@ using F1Simulator.TeamManagementService.Repositories;
 using F1Simulator.TeamManagementService.Services;
 using F1Simulator.TeamManagementService.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace F1Simulator.TeamManagementService.Controllers
@@ -42,8 +43,8 @@ namespace F1Simulator.TeamManagementService.Controllers
             try
             {
                 await _teamService.CreateTeamAsync(teamRequestDto);
-                _logger.LogInformation("Team created successfully!");
-                return Ok();
+                _logger.LogInformation("Team sucessfully created!");
+                return Created();
             }
             catch (Exception ex)
             {
@@ -58,6 +59,10 @@ namespace F1Simulator.TeamManagementService.Controllers
             try
             {
                 var teams = await _teamService.GetAllTeamsAsync();
+
+                if (teams is null || teams.Count == 0)
+                    return NoContent();
+                
                 return Ok(teams);
             }
             catch (Exception ex)
@@ -73,7 +78,7 @@ namespace F1Simulator.TeamManagementService.Controllers
             try
             {
                 var result = await _teamService.GetTeamByIdAsync(teamId);
-                return Ok(result);
+                return result is null ? NotFound() : Ok(result);
             }
             catch(Exception ex)
             {
@@ -88,7 +93,7 @@ namespace F1Simulator.TeamManagementService.Controllers
             try
             {
                 var result = await _teamService.GetTeamByNameAsync(name);
-                return Ok(result);
+                return result is null ? NotFound() : Ok(result);
             }
             catch (Exception ex)
             {
@@ -103,6 +108,7 @@ namespace F1Simulator.TeamManagementService.Controllers
             try
             {
                 await _teamService.UpdateTeamCountryAsync(teamId, newCountry);
+
                 return NoContent();
             }
             catch(Exception ex)
