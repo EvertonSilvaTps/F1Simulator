@@ -15,6 +15,7 @@ namespace F1Simulator.CompetitionService.Repositories.Interfaces
         Task<CreateCircuitResponseDTO?> GetCircuitByIdAsync(Guid id);
         Task<bool> DeleteCircuitAsync(Guid id);
         Task<bool> UpdateCircuitAsync(Guid id, List<string> updates, DynamicParameters parameters);
+        Task<List<CreateCircuitResponseDTO>> GetAllCircuitsActiveAsync();
 
 
     }

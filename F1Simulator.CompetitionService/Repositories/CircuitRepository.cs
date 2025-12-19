@@ -130,6 +130,24 @@ namespace F1Simulator.CompetitionService.Repositories
             }
         }
 
+        public async Task<List<CreateCircuitResponseDTO>> GetAllCircuitsActiveAsync()
+        {
+            try
+            {
+                var select = @"SELECT Id, Name, Country, LapsNumber, IsActive
+                           FROM Circuits
+                            IsActive = 1;";
+
+                var circuits = await _connection.QueryAsync<CreateCircuitResponseDTO>(select);
+                return circuits.ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in GetAllCircuitsAsync in CircuitReposytory: " + ex.Message);
+                throw;
+            }
+        }
+
         public async Task<CreateCircuitResponseDTO?> GetCircuitByIdAsync(Guid id)
         {
             try

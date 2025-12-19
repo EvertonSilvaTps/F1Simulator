@@ -4,7 +4,7 @@ using System.Text;
 
 namespace F1Simulator.Models.DTOs.CompetitionService.Response
 {
-    public class CreateCircuitResponseDTO
+    public class CircuitCompleteResponseDTO
     {
         public Guid Id { get; init; }
         public string Name { get; init; }

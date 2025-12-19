@@ -13,6 +13,15 @@ builder.Services.AddSingleton<CompetitionServiceConnection>();
 builder.Services.AddScoped< ICircuitRepository, CircuitRepository>();
 builder.Services.AddScoped< ICircuitService, CircuitService>();
 
+builder.Services.AddScoped<ICompetitionRepository, CompetitionRepository>();
+builder.Services.AddScoped<ICompetitionService, CompetitionService>();
+
+builder.Services.AddHttpClient("GetTeamsClient", client => client.BaseAddress = new Uri(""));
+builder.Services.AddHttpClient("GetDriversClient", client => client.BaseAddress = new Uri(""));
+builder.Services.AddHttpClient("GetCountTeams", cliente => cliente.BaseAddress = new Uri(""));
+builder.Services.AddHttpClient("GetCountDriversClient", cliente => cliente.BaseAddress = new Uri(""));
+builder.Services.AddHttpClient("GetCountCarsClient", cliente => cliente.BaseAddress = new Uri(""));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
