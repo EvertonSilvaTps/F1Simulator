@@ -14,6 +14,11 @@ builder.Services.AddScoped<IRaceControlService, RaceControlService>();
 builder.Services.AddScoped<IRaceControlRepository, RaceControlRepository>();
 builder.Services.AddSingleton<IPublishService, RabbitMQPublish>();
 
+builder.Services.AddHttpClient("EngineeringService", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:6001/api/engineering/");
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,7 +1,11 @@
-﻿using F1Simulator.Models.DTOs.RaceControlService;
+﻿using F1Simulator.Models.DTOs.EngineeringService;
+using F1Simulator.Models.DTOs.RaceControlService;
+using F1Simulator.Models.DTOs.TeamManegementService.EngineerDTO;
 using F1Simulator.RaceControlService.Messaging;
 using F1Simulator.RaceControlService.Repositories.Interfaces;
 using F1Simulator.RaceControlService.Services.Interfaces;
+using System.Net;
+using System.Text.Json;
 
 namespace F1Simulator.RaceControlService.Services
 {
@@ -10,16 +14,19 @@ namespace F1Simulator.RaceControlService.Services
         private readonly IPublishService _messageService;
         private readonly IRaceControlRepository _raceControlRepository;
         private readonly ILogger<RaceControlService> _logger;
+        private readonly IHttpClientFactory _factory;
 
         public RaceControlService(
             IPublishService messageService,
             IRaceControlRepository raceControlRepository,
-            ILogger<RaceControlService> logger
+            ILogger<RaceControlService> logger,
+            IHttpClientFactory factory
         )
         {
             _messageService = messageService; 
             _raceControlRepository = raceControlRepository;
             _logger = logger;
+            _factory = factory; 
         }
 
         public Task ExecuteQualifierSectionAsync(string raceId)
@@ -133,8 +140,20 @@ namespace F1Simulator.RaceControlService.Services
                 foreach (var d in driversToRace)
                 {
                     // recebe novos valores de Ca e Cp
-                    var newCa = d.Ca + 1;
-                    var newCp = d.Cp + 1;
+
+                    var request = new EngineersPutDTO
+                    {
+                        EngineerCaId = d.EnginneringAId,
+                        EngineerCpId = d.EnginneringPId
+                    };
+
+                    var response = await _factory.CreateClient("EngineeringService")
+                        .PutAsJsonAsync($"car/{d.CarId}", request);
+
+                    var processedResponse = JsonSerializer.Deserialize<CarCoefficientsResponseDTO>(await response.Content.ReadAsStringAsync());
+
+                    var newCa = processedResponse.Ca;
+                    var newCp = processedResponse.Cp;
 
                     var dto = new DriverGridFinalRaceResponseDTO
                     {
