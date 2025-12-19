@@ -105,7 +105,6 @@ namespace F1Simulator.TeamManagementService.Repositories
             {
                 var sql = @"SELECT
                             d.DriverId AS DriverId,
-                            d.DriverNumber As DriverNumber,
                             d.FullName AS DriverName,
                             d.HandiCap AS Handicap,
                             d.ExperienceFactor AS DriverExp,
@@ -121,7 +120,7 @@ namespace F1Simulator.TeamManagementService.Repositories
                         ON t.TeamId = d.TeamId
                         INNER JOIN Cars c
                         ON c.CarId = d.CarId
-                        LEFT JOIN Engineers eCa
+                        INNER JOIN Engineers eCa
                             ON eCa.CarId = c.CarId
                            AND eCa.Specialization = 'Ca'
                            AND eCa.IsActive = 1

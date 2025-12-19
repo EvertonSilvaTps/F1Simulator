@@ -89,26 +89,5 @@ namespace F1Simulator.TeamManagementService.Services
                 throw new Exception(ex.Message);
             }
         }
-
-        public async Task UpdateActiveEngineer(EngineerUpdateRequestDTO engineerUpdateRequestDTO, Guid id)
-        {
-            try
-            {
-                var activeSeason = await _competitionClient.GetActiveSeasonAsync();
-
-                if (activeSeason is not null && activeSeason.IsActive)
-                    throw new InvalidOperationException("Cannot create or update engineer while a competition season is active.");
-
-                var engineer = await _engineerRepository.GetEngineerByIdAsync(id);
-
-                if (engineer is null)
-                    throw new KeyNotFoundException("The engineer not found");
-
-                await _engineerRepository.UpdateActiveEngineerAsync(engineerUpdateRequestDTO, id);
-            } catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
     }
 }

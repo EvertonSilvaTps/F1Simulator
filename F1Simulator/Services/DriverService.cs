@@ -7,7 +7,7 @@ using F1Simulator.TeamManagementService.Services.Interfaces;
 using F1Simulator.Utils.Clients.Interfaces;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System;
-using System.Runtime.CompilerServices;
+using System.Runtime.ConstrainedExecution;
 
 namespace F1Simulator.TeamManagementService.Services
 {
@@ -122,7 +122,14 @@ namespace F1Simulator.TeamManagementService.Services
                 if (activeSeason is not null && activeSeason.IsActive)
                     throw new InvalidOperationException("Cannot create or update teams while a competition season is active.");
 
-                await _driverRepository.UpdateDriverAsync(id, driverRequest);
+                var driverUpdate = Math.Clamp(driverRequest.Handicap, 0, 100);
+
+                var driverNew = new UpdateRequestDriverDTO
+                {
+                    Handicap = driverUpdate
+                };
+
+                await _driverRepository.UpdateDriverAsync(id, driverNew);
             }
             catch (Exception ex)
             {
