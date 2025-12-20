@@ -73,7 +73,7 @@ namespace F1Simulator.CompetitionService.Controllers
             }
         }
 
-        [HttpPatch("dea tivate/{id}")]
+        [HttpPatch("deactivate/{id}")]
 
         public async Task<ActionResult> DeactivateCircuitAsync( [FromRoute] Guid id)
         {
