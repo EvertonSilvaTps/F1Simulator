@@ -2,7 +2,6 @@
 using F1Simulator.Models.Models.TeamManegement;
 using F1Simulator.TeamManagementService.Repositories.Interfaces;
 using F1Simulator.TeamManagementService.Services.Interfaces;
-using F1Simulator.Utils.Clients;
 using F1Simulator.Utils.Clients.Interfaces;
 
 namespace F1Simulator.TeamManagementService.Services
