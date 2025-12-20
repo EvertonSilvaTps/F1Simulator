@@ -74,25 +74,13 @@ namespace F1Simulator.TeamManagementService.Repositories
         {
             try
             {
-                var sql = @"SELECT EngineerId, TeamId, CarId, FirstName, LastName, Specialization, IsActive FROM Engineers WHERE EngineerId = @EngineerId";
+                var sql = @"SELECT EngineerId, TeamId, CarId, FirstName, LastName, Specialization, IsActive, ExperienceFactor FROM Engineers WHERE EngineerId = @EngineerId";
 
                 return await _connection.QueryFirstOrDefaultAsync<EngineerResponseDTO>(sql, new { EngineerId = id});
             } catch(SqlException ex)
             {
                 throw new Exception(ex.Message);
             }
-        }
-
-        public async Task UpdateActiveEngineerAsync(EngineerUpdateRequestDTO engineerUpdateRequestDTO, Guid id)
-        {
-            try
-            {
-                var sql = @"UPDATE Engineers SET IsActive = @IsActive WHERE EngineerId = @EngineerId";
-                await _connection.ExecuteAsync(sql, new { IsActive = engineerUpdateRequestDTO.IsActive, EngineerId = id});
-            } catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }   
         }
     }
 }

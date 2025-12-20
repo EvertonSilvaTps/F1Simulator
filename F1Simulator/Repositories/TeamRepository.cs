@@ -55,7 +55,6 @@ namespace F1Simulator.TeamManagementService.Repositories
                         "VALUES (@TeamId, @Name, @NameAcronym, @Country)";
 
                 await _connection.ExecuteAsync(query, team);
-                await _connection.ExecuteAsync(query, team);
             }
             catch (Exception ex)
             {
@@ -111,7 +110,7 @@ namespace F1Simulator.TeamManagementService.Repositories
             }
         }
 
-        public async Task UpdateTeamCountryAsync(Guid teamId, string country)
+        public async Task UpdateTeamCountryAsync(Guid teamId, TeamCountryDTO team)
         {
             try
             {
@@ -122,7 +121,7 @@ namespace F1Simulator.TeamManagementService.Repositories
                 await _connection.ExecuteAsync(query, new
                 {
                     TeamId = teamId,
-                    Country = country
+                    Country = team.Country
                 });
             }
             catch (SqlException ex)

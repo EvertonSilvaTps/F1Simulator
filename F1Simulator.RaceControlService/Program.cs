@@ -8,6 +8,8 @@ using F1Simulator.Utils.DatabaseConnectionFactory.Config;
 using F1Simulator.Utils.DatabaseConnectionFactory.Connections;
 using Microsoft.Data.SqlClient;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+BsonSerializer.RegisterSerializer(
+    new GuidSerializer(GuidRepresentation.Standard)
+);
 
 builder.Services.Configure<MongoDBSettings>(
     builder.Configuration.GetSection("MongoDB"));
@@ -34,12 +40,12 @@ builder.Services.AddHttpClient("EngineeringService", client =>
 
 builder.Services.AddHttpClient("TeamManagementServicesDrivers", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:8001/api");
+    client.BaseAddress = new Uri("https://localhost:8001/api/");
 });
 
 builder.Services.AddHttpClient("CompetitionService", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:5001/api/competition");
+    client.BaseAddress = new Uri("https://localhost:5001/api/competition/");
 });
 
 var app = builder.Build();

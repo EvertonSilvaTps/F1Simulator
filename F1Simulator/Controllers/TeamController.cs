@@ -97,6 +97,10 @@ namespace F1Simulator.TeamManagementService.Controllers
                 var result = await _teamService.GetTeamByNameAsync(name);
                 return result is null ? NotFound() : Ok(result);
             }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = ex.Message });
+            }
             catch (Exception ex)
             {
                 _logger.LogError($"An error occurred while getting the team by name: {ex.Message}", ex);
@@ -105,7 +109,7 @@ namespace F1Simulator.TeamManagementService.Controllers
         }
 
         [HttpPatch("update/{teamId}")]
-        public async Task<ActionResult> UpdateTeamCountryAsync([FromRoute]string teamId, [FromBody] string newCountry)
+        public async Task<ActionResult> UpdateTeamCountryAsync([FromRoute]string teamId, [FromBody] TeamCountryDTO newCountry)
         {
             try
             {
