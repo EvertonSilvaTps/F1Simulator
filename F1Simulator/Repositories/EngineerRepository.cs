@@ -3,9 +3,7 @@ using F1Simulator.Models.DTOs.TeamManegementService.EngineerDTO;
 using F1Simulator.Models.Models.TeamManegement;
 using F1Simulator.TeamManagementService.Repositories.Interfaces;
 using F1Simulator.Utils.DatabaseConnectionFactory;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using ZstdSharp.Unsafe;
 
 namespace F1Simulator.TeamManagementService.Repositories
 {
