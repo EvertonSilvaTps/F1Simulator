@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using F1Simulator.Models.DTOs.TeamManegementService.CarDTO;
 using F1Simulator.Models.Models.TeamManegement;
-using F1Simulator.TeamManagementService.Data;
 using F1Simulator.TeamManagementService.Repositories.Interfaces;
 using F1Simulator.Utils.DatabaseConnectionFactory;
 using Microsoft.Data.SqlClient;
@@ -15,7 +14,6 @@ namespace F1Simulator.TeamManagementService.Repositories
         {
             _connection = connection.Connect();
         }
-
 
         public async Task CreateCarAsync(Car car)
         {
@@ -104,7 +102,6 @@ namespace F1Simulator.TeamManagementService.Repositories
                 throw new Exception("Error querying the database.", ex);
             }
         }
-
 
         public async Task<int> GetCountCarsByIdTeam(string teamId)
         {
