@@ -82,17 +82,5 @@ namespace F1Simulator.TeamManagementService.Repositories
                 throw new Exception(ex.Message);
             }
         }
-
-        public async Task UpdateActiveEngineerAsync(EngineerUpdateRequestDTO engineerUpdateRequestDTO, Guid id)
-        {
-            try
-            {
-                var sql = @"UPDATE Engineers SET IsActive = @IsActive WHERE EngineerId = @EngineerId";
-                await _connection.ExecuteAsync(sql, new { IsActive = engineerUpdateRequestDTO.IsActive, EngineerId = id});
-            } catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }   
-        }
     }
 }

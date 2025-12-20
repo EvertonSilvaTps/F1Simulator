@@ -129,7 +129,7 @@ namespace F1Simulator.TeamManagementService.Services
                 var team = await _teamRepository.GetTeamByNameAsync(name);
 
                 if (team is null)
-                    throw new Exception("Team not found!");
+                    throw new ArgumentException("Team not found!");
 
                 return team;
             }
@@ -139,7 +139,7 @@ namespace F1Simulator.TeamManagementService.Services
                 throw;
             }
         }
-        public async Task UpdateTeamCountryAsync(string teamId, string country)
+        public async Task UpdateTeamCountryAsync(string teamId, TeamCountryDTO country)
         {
             try
             {

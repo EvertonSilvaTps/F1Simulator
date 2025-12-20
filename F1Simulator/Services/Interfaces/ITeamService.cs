@@ -9,7 +9,7 @@ namespace F1Simulator.TeamManagementService.Services.Interfaces
         Task<List<TeamResponseDTO>> GetAllTeamsAsync();
         Task<TeamResponseDTO> GetTeamByIdAsync(string teamId);
         Task<TeamResponseDTO> GetTeamByNameAsync(string name);
-        Task UpdateTeamCountryAsync(string teamId, string country);
+        Task UpdateTeamCountryAsync(string teamId, TeamCountryDTO country);
         Task<int> GetDriversInTeamById(Guid id);
     }
 }

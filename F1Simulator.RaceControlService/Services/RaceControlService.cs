@@ -63,8 +63,8 @@ namespace F1Simulator.RaceControlService.Services
                 {
                     var request = new EngineersPutDTO
                     {
-                        EngineerCaId = d.EnginneringAId,
-                        EngineerCpId = d.EnginneringPId
+                        EngineerCaId = d.EnginneringAId.ToString(),
+                        EngineerCpId = d.EnginneringPId.ToString()
                     };
 
                     var response = await _engineeringClient.PutAsJsonAsync($"car/{d.CarId}", request);
@@ -78,12 +78,12 @@ namespace F1Simulator.RaceControlService.Services
 
                     var dto = new DriverGridResponseDTO
                     {
-                        DriverId = d.DriverId,
+                        DriverId = d.DriverId.ToString(),
                         DriverName = d.DriverName,
                         Handicap = newHandicap,
-                        TeamId = d.TeamId,
+                        TeamId = d.TeamId.ToString(),
                         TeamName = d.TeamName,
-                        CarId = d.CarId,
+                        CarId = d.CarId.ToString(),
                         Ca = newCa,
                         Cp = newCp
                     };
@@ -169,7 +169,7 @@ namespace F1Simulator.RaceControlService.Services
                 var driversWithPositionQualifierGrid = new List<DriverToRaceWithPositionDTO>();
                 for (var i = 0; i < drivers.Count; i++)
                 {
-                    if (drivers[i].DriverId == gridQualifier[i].DriverId.ToString())
+                    if (drivers[i].DriverId == gridQualifier[i].DriverId)
                     {
                         var driverPosition = new DriverToRaceWithPositionDTO
                         {
@@ -197,8 +197,8 @@ namespace F1Simulator.RaceControlService.Services
                     // recebe novos valores de Ca e Cp
                     var request = new EngineersPutDTO
                     {
-                        EngineerCaId = d.EnginneringAId,
-                        EngineerCpId = d.EnginneringPId
+                        EngineerCaId = d.EnginneringAId.ToString(),
+                        EngineerCpId = d.EnginneringPId.ToString()
                     };
 
                     var responseEngineerClient = await _engineeringClient.PutAsJsonAsync($"car/{d.CarId}", request);
@@ -214,12 +214,12 @@ namespace F1Simulator.RaceControlService.Services
 
                     var dto = new DriverGridFinalRaceResponseDTO
                     {
-                        DriverId = d.DriverId,
+                        DriverId = d.DriverId.ToString(),
                         DriverName = d.DriverName,
                         Handicap = newHandicap,
-                        TeamId = d.TeamId,
+                        TeamId = d.TeamId.ToString(),
                         TeamName = d.TeamName,
-                        CarId = d.CarId,
+                        CarId = d.CarId.ToString(),
                         Ca = newCa,
                         Cp = newCp
                     };
@@ -422,8 +422,8 @@ namespace F1Simulator.RaceControlService.Services
                 {
                     var request = new EngineersPutDTO
                     {
-                        EngineerCaId = d.EnginneringAId,
-                        EngineerCpId = d.EnginneringPId
+                        EngineerCaId = d.EnginneringAId.ToString(),
+                        EngineerCpId = d.EnginneringPId.ToString()
                     };
 
                     var responseEngineeringAPI = await _engineeringClient.PutAsJsonAsync($"car/{d.CarId}", request);
@@ -439,19 +439,19 @@ namespace F1Simulator.RaceControlService.Services
                     {
                         OlderStats = new DriverAndCarStatsDTO
                         {
-                            DriverId = d.DriverId,
+                            DriverId = d.DriverId.ToString(),
                             DriverName = d.DriverName,
                             Handicap = d.Handicap,
-                            CarId = d.CarId,
+                            CarId = d.CarId.ToString(),
                             Ca = d.Ca,
                             Cp = d.Cp
                         },
                         NewStats = new DriverAndCarStatsDTO
                         {
-                            DriverId = d.DriverId,
+                            DriverId = d.DriverId.ToString(),
                             DriverName = d.DriverName,
                             Handicap = newHandicap,
-                            CarId = d.CarId,
+                            CarId = d.CarId.ToString(),
                             Ca = newCa,
                             Cp = newCp
                         }
