@@ -1,6 +1,4 @@
-﻿using F1Simulator.Models.DTOs.TeamManegementService.CarDTO;
-using F1Simulator.Models.DTOs.TeamManegementService.EngineerDTO;
-using F1Simulator.Models.DTOs.TeamManegementService.TeamDTO;
+﻿using F1Simulator.Models.DTOs.TeamManegementService.EngineerDTO;
 using F1Simulator.Models.Models.TeamManegement;
 using F1Simulator.TeamManagementService.Repositories.Interfaces;
 using F1Simulator.TeamManagementService.Services.Interfaces;

@@ -1,12 +1,6 @@
 ﻿using F1Simulator.Models.DTOs.TeamManegementService.BossDTO;
-using F1Simulator.Models.DTOs.TeamManegementService.TeamDTO;
-using F1Simulator.Models.Models.TeamManegement;
-using F1Simulator.Models.Models.TeamManegementService;
-using F1Simulator.TeamManagementService.Services;
 using F1Simulator.TeamManagementService.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson.Serialization.Serializers;
 
 namespace F1Simulator.TeamManagementService.Controllers
 {
@@ -28,8 +22,8 @@ namespace F1Simulator.TeamManagementService.Controllers
         {
             try
             {
-                _logger.LogInformation("Count of boss in the team:");
-                return await _bossService.GetBossByTeamCountAsync(teamId);
+                var count = await _bossService.GetBossByTeamCountAsync(teamId);
+                return StatusCode(201, count); ;
             }
             catch (ArgumentException ex)
             {
@@ -57,8 +51,7 @@ namespace F1Simulator.TeamManagementService.Controllers
             try
             {
                await _bossService.CreateBossAsync(bossDto);
-                _logger.LogInformation("Team sucessfully created!");
-                return StatusCode(StatusCodes.Status201Created); ;
+                return StatusCode(StatusCodes.Status201Created, bossDto); ;
             }
             catch (ArgumentException ex)
             {
@@ -142,8 +135,8 @@ namespace F1Simulator.TeamManagementService.Controllers
         {
             try
             {
-                _logger.LogInformation("Count of all boss:");
-                return await _bossService.GetAllBossesCountAsync();
+                var count = await _bossService.GetAllBossesCountAsync();
+                return Ok(count); ;
             }
             catch (ArgumentException ex)
             {
