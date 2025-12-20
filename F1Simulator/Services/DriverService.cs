@@ -20,17 +20,26 @@ namespace F1Simulator.TeamManagementService.Services
         private readonly ICompetitionClient _competitionClient;
 
 
-        public DriverService(IDriverRepository driverRepository, ICarService carService, ITeamService teamService)
+        public DriverService(IDriverRepository driverRepository, ICarService carService, ITeamService teamService, ICompetitionClient competitionClient)
         {
             _driverRepository = driverRepository;
             _carService = carService;
             _teamService = teamService;
+            _competitionClient = competitionClient;
         }
 
         public async Task<DriverResponseDTO> CreateDriverAsync(DriverRequestDTO driverRequest)
         {
             try
             {
+                var activeSeason = await _competitionClient.GetActiveSeasonAsync();
+
+                if (activeSeason is not null && activeSeason.IsActive)
+                    throw new InvalidOperationException("Cannot create or update drivers while a competition season is active.");
+
+                if (await _driverRepository.GetAllDriversCount() >= 22)
+                    throw new InvalidOperationException("The grid already has 22 drivers.");
+
                 if (driverRequest.DriverNumber < 0)
                     throw new ArgumentException("The driver number cannot be negative");
 

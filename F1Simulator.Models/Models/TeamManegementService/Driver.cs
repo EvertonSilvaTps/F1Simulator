@@ -17,7 +17,6 @@ namespace F1Simulator.Models.Models.TeamManegement
             WeightKg = weightKg;
             ExperienceFactor = experienceFactor;
             HandiCap = handicap;
-            IsActive = true;
         }
 
         public Guid DriverId { get; set; }
@@ -29,6 +28,5 @@ namespace F1Simulator.Models.Models.TeamManegement
         public string FullName { get; set; }
         public double WeightKg { get; set; }
         public double HandiCap { get; set; }
-        public bool IsActive { get; set; } = true;
     }
 }
