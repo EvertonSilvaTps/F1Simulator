@@ -1,5 +1,6 @@
 ﻿using F1Simulator.CompetitionService.Exceptions;
 using F1Simulator.CompetitionService.Services.Interfaces;
+using F1Simulator.Models.DTOs.CompetitionService.Response;
 using F1Simulator.Models.Enums.CompetitionService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -273,7 +274,7 @@ namespace F1Simulator.CompetitionService.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving team standings");
+                _logger.LogError(ex, "Error retrieving calendar");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving calendar.");
             }
         }
@@ -296,6 +297,48 @@ namespace F1Simulator.CompetitionService.Controllers
             {
                 _logger.LogError(ex, "Error ending race ");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while ending the race.");
+            }
+        }
+
+        [HttpPost("endseason")]
+
+        public async Task<ActionResult<StandingsResponseDTO>> EndSeasonAsync()
+        {
+            try
+            {
+                var standings = await _competitionService.EndSeasonAsync();
+                return Ok(standings);
+            }
+            catch (BusinessException bex)
+            {
+                _logger.LogWarning(bex, "Business error ending season ");
+                return NotFound(bex.Message);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error ending race ");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while ending the season.");
+            }
+        }
+
+        [HttpGet("seasons")]
+        public async Task<ActionResult<List<SeasonResponseDTO>>> GetAllSeasonsAsync()
+        {
+            try
+            {
+                var seasons = await _competitionService.GetAllSeasonsAsync();
+                return Ok(seasons);
+            }
+            catch (BusinessException bex)
+            {
+                _logger.LogError(bex, "An error occurred while get seasons");
+                return NotFound(bex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving seasons");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving seasons.");
             }
         }
     }

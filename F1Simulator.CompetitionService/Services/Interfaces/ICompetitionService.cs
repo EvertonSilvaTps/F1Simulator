@@ -20,6 +20,10 @@ namespace F1Simulator.CompetitionService.Services.Interfaces
         Task<List<TeamStandingResponseWhitPositionDTO>> GetTeamStandingAsync();
         Task<List<RaceResponseDTO>> GetRacesAsync();
         Task EndRaceAsync();
-       
+        Task<StandingsResponseDTO> EndSeasonAsync();
+        Task<List<SeasonResponseDTO>> GetAllSeasonsAsync();
+
+
+
     }
 }
