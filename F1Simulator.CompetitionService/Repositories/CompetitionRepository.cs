@@ -10,11 +10,11 @@ namespace F1Simulator.CompetitionService.Repositories
     public class CompetitionRepository : ICompetitionRepository
     {
 
-        private readonly ILogger<CompetitionRepository> _logger;
+        
         private readonly SqlConnection _connection;
-        public CompetitionRepository(ILogger<CompetitionRepository> logger, IDatabaseConnection<SqlConnection> connection)
+        public CompetitionRepository(IDatabaseConnection<SqlConnection> connection)
         {
-            _logger = logger;
+         
             _connection = connection.Connect();
         }
 
@@ -28,7 +28,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in GetCompetionActive in CompetitionRepository");
+           
                 throw;
             }
         }
@@ -44,7 +44,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in GetMaxYearSeason in CompetitionRepository");
+               
                 throw;
             }
         }
@@ -59,7 +59,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in  CreateSeason in CompetitionRepository");
+               
                 throw;
             }
 
@@ -129,7 +129,7 @@ namespace F1Simulator.CompetitionService.Repositories
                 catch (SqlException ex)
                 {
                     transaction.Rollback();
-                    _logger.LogError(ex, "Error in StartSeasonAsync in CompetitionRepository");
+                    
                     throw;
                 }
             }
@@ -148,7 +148,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in GetRaceCompleteByIdAndSeasonIdAsync in CompetitionRepository");
+               
                 throw;
             }
         }
@@ -167,7 +167,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in ExistRaceInProgress in CompetitionRepository");
+               
                 throw;
             }
         }
@@ -184,7 +184,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in GetRaceInProgress in CompetitionRepository");
+              
                 throw;
             }
         }
@@ -200,7 +200,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in UpdateStatusRace in CompetitionRepository");
+            
                 throw;
             }
         }
@@ -219,7 +219,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in GetRacesAsyn in CompetitionRepository");
+                
                 throw;
             }
         }
@@ -236,7 +236,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in GetRaceByIdAsync in CompetitionRepository");
+                
                 throw;
             }
         }
@@ -267,7 +267,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in GetRaceWithCircuitAsync in CompetitionRepository");
+                
                 throw;
             }
         }
@@ -284,7 +284,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in UpdateRaceT1Async in CompetitionRepository");
+                
                 throw;
             }
         }
@@ -302,7 +302,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in UpdateRaceT2Async in CompetitionRepository");
+               
                 throw;
             }
         }
@@ -319,7 +319,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in UpdateRaceT3Async in CompetitionRepository");
+               
                 throw;
             }
         }
@@ -336,7 +336,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in UpdateRaceQualifierAsync in CompetitionRepository");
+               
                 throw;
             }
         }
@@ -353,7 +353,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in UpdateRaceRaceAsync in CompetitionRepository");
+                
                 throw;
             }
         }
@@ -372,7 +372,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in GetDriverStanding in CompetitionRepository");
+              
                 throw;
             }
         }
@@ -390,7 +390,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError(ex, "Error in GetTeamStanding in CompetitionRepository");
+                
                 throw;
             }
         }
@@ -446,7 +446,7 @@ namespace F1Simulator.CompetitionService.Repositories
                 catch (SqlException ex)
                 {
                     transaction.Rollback();
-                    _logger.LogError(ex, "Error in EndRaceAsync in CompetitionRepository");
+                   
                     throw;
                 }
             }

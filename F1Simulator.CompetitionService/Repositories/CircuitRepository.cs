@@ -10,12 +10,11 @@ namespace F1Simulator.CompetitionService.Repositories
     public class CircuitRepository : ICircuitRepository
     {
 
-        private readonly ILogger<CircuitRepository> _logger;
+  
         private readonly SqlConnection _connection;
 
-        public CircuitRepository(ILogger<CircuitRepository> logger, IDatabaseConnection<SqlConnection> connection)
-        {
-            _logger = logger;
+        public CircuitRepository( IDatabaseConnection<SqlConnection> connection)
+        {          
             _connection = connection.Connect();
         }
 
@@ -39,7 +38,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError("Error in CreateCircuitAsync in CircuitReposytory: " + ex.Message);
+               
                 throw;
             }
         }
@@ -55,7 +54,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError("Error in ExistsAsync in CircuitReposytory: " + ex.Message);
+               
                 throw;
             }
         }
@@ -71,7 +70,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError("Error in CircuitsActivadesAsync in CircuitReposytory: " + ex.Message);
+                
                 throw;
             }
         }
@@ -88,7 +87,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError("Error in GetCircuitById in CircuitRepository: " + ex.Message);
+              
                 throw;
             }
             
@@ -107,7 +106,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError("Error in GetAllCircuitsAsync in CircuitReposytory: " + ex.Message);
+               
                 throw;
             }
         }
@@ -125,7 +124,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError("Error in GetAllCircuitsAsync in CircuitReposytory: " + ex.Message);
+               
                 throw;
             }
         }
@@ -145,7 +144,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError("Error in DeleteCircuitAsync in CircuitReposytory: " + ex.Message);
+               
                 throw;
             }
         }
@@ -161,7 +160,7 @@ namespace F1Simulator.CompetitionService.Repositories
             }
             catch (SqlException ex)
             {
-                _logger.LogError("Error in UpdateCircuitAsync in CircuitReposytory: " + ex.Message);
+                
                 throw;
             }
         }

@@ -30,9 +30,14 @@ namespace F1Simulator.CompetitionService.Services
             {
                 //verifica se a temporada já foi iniciada, se sim não permite criar novos circuitos
                 var seasonStarted = await _competitionRepository.GetCompetionActiveAsync();
-                if (seasonStarted != null)
+                if (seasonStarted is not null)
                 {
-                    throw new BusinessException("Cannot create circuits when the season has already started.");
+                    throw new InvalidOperationException("Cannot create circuits when the season has already started.");
+                }
+
+                if(circuits is null)
+                {
+                    throw new ArgumentException("Circuit cannot be null.");
                 }
 
                 CreateCircuitsResponseDTO circuitsForController = new CreateCircuitsResponseDTO();
@@ -65,6 +70,13 @@ namespace F1Simulator.CompetitionService.Services
                 }
                 return circuitsForController;
 
+            }catch(InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
+            catch(ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message); 
             }
             catch (Exception ex)
             {
@@ -80,7 +92,12 @@ namespace F1Simulator.CompetitionService.Services
                 var seasonStarted = await _competitionRepository.GetCompetionActiveAsync();
                 if (seasonStarted != null)
                 {
-                    throw new BusinessException("Cannot create circuits when the season has already started.");
+                    throw new InvalidOperationException("Cannot create circuits when the season has already started.");
+                }
+
+                if(createCircuit is null)
+                {
+                    throw new ArgumentException("Circuit cannot be null.");
                 }
 
                 // verifica se já existem 24 circuitos ativos, para os p´róximos serem criados como inativos
@@ -88,7 +105,7 @@ namespace F1Simulator.CompetitionService.Services
                 int circuitsActive = await _circuitRepository.CircuitsActivatesAsync();
                 if (circuitsActive == 24)
                 {
-                    throw new BusinessException("You are only allowed to register 24 circuits.");
+                    throw new InvalidOperationException("You are only allowed to register 24 circuits.");
                 }
                 Circuit circuit = new Circuit(createCircuit.Name, createCircuit.Country, createCircuit.LapsNumber, IsActive);
                 await _circuitRepository.CreateCircuitAsync(circuit);
@@ -97,7 +114,7 @@ namespace F1Simulator.CompetitionService.Services
                 bool retorno = await _circuitRepository.CircuitExistsAsync(createCircuit.Name);
                 if (retorno == true)
                 {
-                    throw new BusinessException("Error: There is already a registration with the same name for all past circuits.");
+                    throw new InvalidOperationException("Error: There is already a registration with the same name for all past circuits.");
                 }
 
                 
@@ -111,6 +128,14 @@ namespace F1Simulator.CompetitionService.Services
                     LapsNumber = circuit.LapsNumber,
                     IsActive = circuit.IsActive
                 };
+            }
+            catch(InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
             catch (Exception ex)
             {
@@ -158,10 +183,25 @@ namespace F1Simulator.CompetitionService.Services
                 var seasonStarted = await _competitionRepository.GetCompetionActiveAsync();
                 if (seasonStarted != null)
                 {
-                    throw new BusinessException("Cannot delete circuits when the season has already started.");
+                    throw new InvalidOperationException("Cannot delete circuits when the season has already started.");
+                }
+
+                // verifica se existe algum circuito com o id informado
+                var circuit = await _circuitRepository.GetCircuitByIdAsync(id);
+                if (circuit is null)
+                {
+                    throw new KeyNotFoundException("No circuit was found with the given ID.");
                 }
 
                 return await _circuitRepository.DeleteCircuitAsync(id);
+            }
+            catch(InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                throw new KeyNotFoundException(ex.Message);
             }
             catch (Exception ex)
             {
@@ -176,17 +216,22 @@ namespace F1Simulator.CompetitionService.Services
             {
                 // verificar se a temporada já está ativa, se tiver não permite atualização
                 var seasonStarted = await _competitionRepository.GetCompetionActiveAsync();
-                if (seasonStarted != null)
+                if (seasonStarted is not null)
                 {
-                    throw new BusinessException("Cannot update circuits when the season has already started.");
+                    throw new InvalidOperationException("Cannot update circuits when the season has already started.");
                 }
 
                 // verifica se existe algum circuito com o id informado
 
                 var circuit = await _circuitRepository.GetCircuitByIdAsync(id);
-                if (circuit == null)
+                if (circuit is null)
                 {
-                    return (false, null);
+                    throw new KeyNotFoundException("No circuit was found with the given ID.");
+                }
+
+                if(updateCircuit is null)
+                {
+                    throw new ArgumentException("Update cannot be null.");
                 }
 
                 var updates = new List<string>();
@@ -199,7 +244,7 @@ namespace F1Simulator.CompetitionService.Services
                     bool existe = await _circuitRepository.CircuitExistsAsync(updateCircuit.Name);
                     if (existe is true)
                     {
-                        return (true, null);
+                        throw new InvalidOperationException("A circuit with the provided name has already been registered.");
                     }
 
                     updates.Add("Name = @Name");
@@ -222,6 +267,18 @@ namespace F1Simulator.CompetitionService.Services
                 circuit = await _circuitRepository.GetCircuitByIdAsync(id);
 
                 return (result, circuit);
+
+            }catch(ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                throw new KeyNotFoundException(ex.Message);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using F1Simulator.CompetitionService.Exceptions;
+﻿using Azure;
+using F1Simulator.CompetitionService.Exceptions;
 using F1Simulator.CompetitionService.Services.Interfaces;
 using F1Simulator.Models.DTOs.CompetitionService.Request;
 using F1Simulator.Models.DTOs.CompetitionService.Response;
@@ -27,22 +28,26 @@ namespace F1Simulator.CompetitionService.Controllers
             {
 
                  var circuit = await _circuitService.CreateCircuitAsync(createCircuit);
-                if(circuit == null)
-                {
-                    return BadRequest("Error: There is already a circuit with this name and country.");
-                }
-                return Ok(circuit);
+                 return StatusCode(StatusCodes.Status201Created, circuit);
+                
 
-            }catch(BusinessException bex)
+            }
+            catch (ArgumentException ex)
             {
-                _logger.LogWarning(bex, "Business error creating circuit");
-                return BadRequest(bex.Message);
-
+                return StatusCode(400, new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating circuit");
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the circuit.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while creating the circuit." });
             }
         }
 
@@ -52,22 +57,25 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 CreateCircuitsResponseDTO circuit = await _circuitService.CreateCircuitsAsync(createCircuit);
-                if (circuit.circuits.IsNullOrEmpty())
-                {
-                    return BadRequest("You are only allowed to register 24 circuits.");
-                }
-                return Ok(circuit);
+                return StatusCode(StatusCodes.Status201Created, circuit);
+                
             }
-            catch (BusinessException bex)
+            catch (ArgumentException ex)
             {
-                _logger.LogWarning(bex, "Business error creating circuit");
-                return BadRequest(bex.Message);
-
+                return StatusCode(400, new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating circuit");
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the circuits.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while creating the circuits." });
             }
         }
 
@@ -77,12 +85,13 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 var circuits = await _circuitService.GetAllCircuitsAsync();
-                return Ok(circuits);
+                return StatusCode(StatusCodes.Status200OK, circuits);
             }
+           
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error when getting all circuits");
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while getting all circuits.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while getting all circuits." });
             }   
         }
 
@@ -92,16 +101,17 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 var circuit = await _circuitService.GetCircuitByIdAsync(id);
-                if(circuit == null)
+                if(circuit is null)
                 {
-                    return NotFound("Circuit not found");
+                    return StatusCode(404, new { message = "Circuit not found." });
                 }
-                return Ok(circuit);
+                return StatusCode(StatusCodes.Status200OK, circuit);
             }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error when get circuit by id");
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while get circuit by id.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while get circuit by id." });
             }
         }
 
@@ -111,21 +121,21 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 var circuit = await _circuitService.DeleteCircuitAsync(id);
-                if (circuit == false)
-                {
-                    return NotFound("Circuit not found");
-                }
-                return Ok();
+                return StatusCode(StatusCodes.Status200OK, circuit);
             }
-            catch (BusinessException bex)
+          
+            catch (InvalidOperationException ex)
             {
-                _logger.LogWarning(bex, "Business error deleting circuit");
-                return BadRequest(bex.Message);
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error when get circuit by id");
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while get circuit by id.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while get circuit by id." });
             }
         }
 
@@ -135,24 +145,24 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 var (update, circuit) = await _circuitService.UpdateCircuitAsync(id, updateCircuit);
-                if (circuit == null && update == false)
-                {
-                    return NotFound("Circuit not found.");
-                }
-                if (circuit == null && update == true)
-                {
-                    return BadRequest("there is already a circuit with this name");
-                }
-                return Ok(circuit);
-            }catch (BusinessException bex)
+                return StatusCode(StatusCodes.Status200OK, circuit);
+            }
+            catch (ArgumentException ex)
             {
-                _logger.LogWarning(bex, "Business error updating circuit");
-                return BadRequest(bex.Message);
+                return StatusCode(400, new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error when updating circuit");
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating the circuit.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating the circuit." });
             }
         }
 

@@ -1,7 +1,9 @@
 ﻿using F1Simulator.CompetitionService.Exceptions;
 using F1Simulator.CompetitionService.Services.Interfaces;
 using F1Simulator.Models.DTOs.CompetitionService.Response;
+using F1Simulator.Models.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace F1Simulator.CompetitionService.Controllers
 {
@@ -24,11 +26,11 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 var competition = await _competitionService.GetCompetitionActiveAsync();
-                if (competition == null)
+                if (competition is null)
                 {
-                    return NotFound("There is no season that has started.");
+                    return StatusCode(404, new { message = "There is no season that has started." });
                 }
-                return Ok(competition);
+                return StatusCode(StatusCodes.Status200OK, competition);
             }
             catch (Exception ex)
             {
@@ -44,13 +46,11 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 var result = await _competitionService.StartSeasonAsync();
-                return Ok(result);
+                return StatusCode(StatusCodes.Status201Created, result);
             }
-            catch (BusinessException bex)
+            catch (InvalidOperationException ex)
             {
-                _logger.LogWarning(bex, "Business error starting season");
-                return BadRequest(bex.Message);
-
+                return StatusCode(409, new { message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -65,13 +65,20 @@ namespace F1Simulator.CompetitionService.Controllers
         {
             try
             {
-                await _competitionService.StartRaceAsync(round);
-                return Ok();
+                var race = await _competitionService.StartRaceAsync(round);
+                return StatusCode(StatusCodes.Status200OK, race);
             }
-            catch (BusinessException bex)
+            catch (ArgumentException ex)
             {
-                _logger.LogWarning(bex, "Business error starting");
-                return BadRequest(bex.Message);
+                return StatusCode(400, new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -86,18 +93,17 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 var race = await _competitionService.GetRaceWithCircuitAsync();
-                if (race == null)
+                if (race is null)
                 {
-                    return NotFound("There isn't a race in progress in the current season.");
+                    return StatusCode(404, new { Message = "There isn't a race in progress in the current season." });
                 }
 
-                return Ok(race);
+                return StatusCode(StatusCodes.Status200OK, race);
 
             }
-            catch (BusinessException bex)
+            catch (InvalidOperationException ex)
             {
-                _logger.LogError(bex, "An error occurred while get the race");
-                return NotFound(bex.Message);
+                return StatusCode(409, new { message = ex.Message });
             }
 
             catch (Exception ex)
@@ -114,13 +120,13 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 await _competitionService.UpdateRaceT1Async();
-                return Ok();
+                return StatusCode(StatusCodes.Status200OK);
 
             }
-            catch (BusinessException bex)
+            catch (InvalidOperationException bex)
             {
                 _logger.LogError(bex, "An error occurred while updating T1");
-                return NotFound(bex.Message);
+                return StatusCode(404, new { message = bex.Message });
             }
             catch (Exception ex)
             {
@@ -136,13 +142,13 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 await _competitionService.UpdateRaceT2Async();
-                return Ok();
+                return StatusCode(StatusCodes.Status200OK);
 
             }
-            catch (BusinessException bex)
+            catch (InvalidOperationException bex)
             {
-                _logger.LogError(bex, "An error occurred while updating T2");
-                return NotFound(bex.Message);
+                _logger.LogError(bex, "An error occurred while updating T1");
+                return StatusCode(404, new { message = bex.Message });
             }
             catch (Exception ex)
             {
@@ -158,13 +164,13 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 await _competitionService.UpdateRaceT3Async();
-                return Ok();
+                return StatusCode(StatusCodes.Status200OK);
 
             }
-            catch (BusinessException bex)
+            catch (InvalidOperationException bex)
             {
-                _logger.LogError(bex, "An error occurred while updating T3");
-                return NotFound(bex.Message);
+                _logger.LogError(bex, "An error occurred while updating T1");
+                return StatusCode(404, new { message = bex.Message });
             }
             catch (Exception ex)
             {
@@ -180,13 +186,13 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 await _competitionService.UpdateRaceQualifierAsync();
-                return Ok();
+                return StatusCode(StatusCodes.Status200OK);
 
             }
-            catch (BusinessException bex)
+            catch (InvalidOperationException bex)
             {
-                _logger.LogError(bex, "An error occurred while updating Qualifier");
-                return NotFound(bex.Message);
+                _logger.LogError(bex, "An error occurred while updating T1");
+                return StatusCode(404, new { message = bex.Message });
             }
             catch (Exception ex)
             {
@@ -202,13 +208,13 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 await _competitionService.UpdateRaceRaceAsync();
-                return Ok();
+                return StatusCode(StatusCodes.Status200OK);
 
             }
-            catch (BusinessException bex)
+            catch (InvalidOperationException bex)
             {
-                _logger.LogError(bex, "An error occurred while updating race");
-                return NotFound(bex.Message);
+                _logger.LogError(bex, "An error occurred while updating T1");
+                return StatusCode(404, new { message = bex.Message });
             }
             catch (Exception ex)
             {
@@ -223,12 +229,11 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 var driverStandings = await _competitionService.GetDriverStandingAsync();
-                return Ok(driverStandings);
+                return StatusCode(StatusCodes.Status200OK, driverStandings);
             }
-            catch (BusinessException bex)
+            catch (InvalidOperationException ex)
             {
-                _logger.LogError(bex, "An error occurred while retrieving driver standings");
-                return NotFound(bex.Message);
+                return StatusCode(409, new { message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -243,12 +248,11 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 var teamStandings = await _competitionService.GetTeamStandingAsync();
-                return Ok(teamStandings);
+                return StatusCode(StatusCodes.Status200OK, teamStandings);
             }
-            catch (BusinessException bex)
+            catch (InvalidOperationException ex)
             {
-                _logger.LogError(bex, "An error occurred while retrieving team standings");
-                return NotFound(bex.Message);
+                return StatusCode(409, new { message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -263,12 +267,11 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 var calendar = await _competitionService.GetRacesAsync();
-                return Ok(calendar);
+                return StatusCode(StatusCodes.Status200OK, calendar);
             }
-            catch (BusinessException bex)
+            catch (InvalidOperationException ex)
             {
-                _logger.LogError(bex, "An error occurred while retrieving calendar");
-                return NotFound(bex.Message);
+                return StatusCode(409, new { message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -283,13 +286,11 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 await _competitionService.EndRaceAsync();
-                return Ok();
+                return StatusCode(StatusCodes.Status200OK);
             }
-            catch (BusinessException bex)
+            catch (InvalidOperationException ex)
             {
-                _logger.LogWarning(bex, "Business error ending race ");
-                return NotFound(bex.Message);
-
+                return StatusCode(409, new { message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -305,13 +306,15 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 var standings = await _competitionService.EndSeasonAsync();
-                return Ok(standings);
+                return StatusCode(StatusCodes.Status200OK, standings);
             }
-            catch (BusinessException bex)
+            catch (InvalidOperationException ex)
             {
-                _logger.LogWarning(bex, "Business error ending season ");
-                return NotFound(bex.Message);
-
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -326,12 +329,7 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 var seasons = await _competitionService.GetAllSeasonsAsync();
-                return Ok(seasons);
-            }
-            catch (BusinessException bex)
-            {
-                _logger.LogError(bex, "An error occurred while get seasons");
-                return NotFound(bex.Message);
+                return StatusCode(StatusCodes.Status200OK, seasons);
             }
             catch (Exception ex)
             {
