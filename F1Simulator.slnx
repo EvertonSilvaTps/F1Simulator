@@ -12,7 +12,10 @@
   <Folder Name="/docs/Insomnia/RaceControlService/">
     <File Path="racecontrol-service.yaml" />
   </Folder>
-  <Folder Name="/docs/Insomnia/TeamManagementService/" />
+  <Folder Name="/docs/Insomnia/TeamManagementService/">
+    <File Path="boss-service.yaml" />
+    <File Path="team-service.yaml" />
+  </Folder>
   <Folder Name="/docs/READMES/">
     <File Path="documentacao-f1simulator.md" />
   </Folder>
