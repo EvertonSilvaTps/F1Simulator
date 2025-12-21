@@ -9,11 +9,10 @@ namespace F1Simulator.Models.DTOs.TeamManegementService.EngineerDTO
         public Guid TeamId { get; init; }
         public Guid CarId { get; init; }
         public string FirstName { get; init; }
-        public string LastName { get; init; }
+        public string FullName { get; init; }
         [JsonIgnore]
-        public Specialization EngineerSpecialization { get; init; }
-        public string EngineerSpecializationDescription => EngineerSpecialization.ToString(); 
+        public Specialization Specialization { get; init; }
+        public string EngineerSpecializationDescription => Specialization.ToString(); 
         public double ExperienceFactor { get; init; }
-        public bool IsActive { get; init; }
     }
 }

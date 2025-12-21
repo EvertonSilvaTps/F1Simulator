@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using F1Simulator.Models.DTOs.CompetitionService.Response;
-using F1Simulator.Models.Models;
+using F1Simulator.Models.Models.CompetitionService;
 
 namespace F1Simulator.CompetitionService.Repositories.Interfaces
 {

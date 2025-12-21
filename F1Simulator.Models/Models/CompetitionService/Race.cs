@@ -1,6 +1,6 @@
 ﻿using F1Simulator.Models.Enums.CompetitionService;
 
-namespace F1Simulator.Models.Models
+namespace F1Simulator.Models.Models.CompetitionService
 {
     public class Race
     {

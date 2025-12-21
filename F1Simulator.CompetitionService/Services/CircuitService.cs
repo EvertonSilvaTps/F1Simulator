@@ -4,7 +4,7 @@ using F1Simulator.CompetitionService.Services.Interfaces;
 using F1Simulator.Models.DTOs.CompetitionService.Request;
 using F1Simulator.Models.DTOs.CompetitionService.Response;
 using F1Simulator.Models.DTOs.CompetitionService.Update;
-using F1Simulator.Models.Models;
+using F1Simulator.Models.Models.CompetitionService;
 
 namespace F1Simulator.CompetitionService.Services
 {
@@ -106,8 +106,6 @@ namespace F1Simulator.CompetitionService.Services
                 {
                     throw new InvalidOperationException("You are only allowed to register 24 circuits.");
                 }
-                Circuit circuit = new Circuit(createCircuit.Name, createCircuit.Country, createCircuit.LapsNumber, IsActive);
-                await _circuitRepository.CreateCircuitAsync(circuit);
 
                 // verifica se já não existe um circuito com o mesmo nome e país, para evitar duplicidade
                 bool retorno = await _circuitRepository.CircuitExistsAsync(createCircuit.Name);
@@ -116,7 +114,8 @@ namespace F1Simulator.CompetitionService.Services
                     throw new InvalidOperationException("Error: There is already a registration with the same name for all past circuits.");
                 }
 
-                
+                Circuit circuit = new Circuit(createCircuit.Name, createCircuit.Country, createCircuit.LapsNumber, IsActive);
+                await _circuitRepository.CreateCircuitAsync(circuit);
 
                 // Retorna os dados do circuito criado
                 return new CreateCircuitResponseDTO

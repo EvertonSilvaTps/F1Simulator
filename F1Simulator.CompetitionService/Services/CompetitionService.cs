@@ -7,6 +7,7 @@ using F1Simulator.Models.DTOs.TeamManegementService.CarDTO;
 using F1Simulator.Models.DTOs.TeamManegementService.TeamDTO;
 using F1Simulator.Models.Enums.CompetitionService;
 using F1Simulator.Models.Models;
+using F1Simulator.Models.Models.CompetitionService;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -24,6 +25,7 @@ namespace F1Simulator.CompetitionService.Services
         private readonly HttpClient _httpGetDriversClient;
         private readonly HttpClient _httpGetCountCars;
         private readonly IConnectionFactory _connectionFactory;
+        private readonly HttpClient _httpGetCountEngineers;
 
         public CompetitionService(ILogger<ICompetitionService> logger,
             ICompetitionRepository competitionRepository,
@@ -36,6 +38,7 @@ namespace F1Simulator.CompetitionService.Services
             _httpGetTeamsClient = httpClientFactory.CreateClient("GetTeamsClient");
             _httpGetDriversClient = httpClientFactory.CreateClient("GetDriversClient");
             _httpGetCountCars = httpClientFactory.CreateClient("GetCountCarsClient");
+            _httpGetCountEngineers = httpClientFactory.CreateClient("GetCountEngineersClient");
             _circuitRepository = circuitRepository;
             _connectionFactory = _connection;
         }
@@ -71,6 +74,14 @@ namespace F1Simulator.CompetitionService.Services
                 {
                     throw new InvalidOperationException("The season cannot start due to a lack of teams.");
                 }
+
+                // Verifica se existem 40 ou 44 engenheiros cadastradas, se não houver lança uma exceção 
+                var countEngineers = await _httpGetCountEngineers.GetFromJsonAsync<int>("count");
+                if (countEngineers != 40 || countEngineers != 44)
+                {
+                    throw new InvalidOperationException("The season cannot start due to a lack of engineers.");
+                }
+
 
                 // Verifica se cada equipe possui 2 pilotos cadastrados, se não possuir lança uma exceção 
 

@@ -10,8 +10,8 @@ namespace F1Simulator.Models.Models.TeamManegement
             TeamId = teamId;
             CarId = carId;
             FirstName = firstName;
-            FullName = fullName;
-            EngineerSpecialization = engineerSpecialization;
+            LastName = fullName;
+            Specialization = engineerSpecialization;
             ExperienceFactor = experienceFactor;
         }
 
@@ -19,8 +19,14 @@ namespace F1Simulator.Models.Models.TeamManegement
         public Guid TeamId { get; set; }
         public Guid CarId { get; set; }
         public string FirstName { get; set; }
-        public string FullName { get; set; }
-        public Specialization EngineerSpecialization { get; set; }
-        public double ExperienceFactor { get; set; }    
+        public string LastName { get; set; }
+        public Specialization Specialization { get; set; }
+        public double ExperienceFactor { get; set; }
+
+
+        public Engineer()
+        {
+            
+        }
     }
 }

@@ -24,6 +24,7 @@ builder.Services.AddScoped<ICompetitionService, CompetitionService>();
 builder.Services.AddHttpClient("GetTeamsClient", client => client.BaseAddress = new Uri("https://localhost:8001/api/team/"));
 builder.Services.AddHttpClient("GetDriversClient", client => client.BaseAddress = new Uri("https://localhost:8001/api/driver/"));
 builder.Services.AddHttpClient("GetCountCarsClient", cliente => cliente.BaseAddress = new Uri("https://localhost:8001/api/car"));
+builder.Services.AddHttpClient("GetCountEngineersClient", cliente => cliente.BaseAddress = new Uri("https://localhost:8001/api/engineer/"));
 
 var app = builder.Build();
 

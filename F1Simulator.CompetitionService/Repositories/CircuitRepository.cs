@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using F1Simulator.CompetitionService.Repositories.Interfaces;
 using F1Simulator.Models.DTOs.CompetitionService.Response;
-using F1Simulator.Models.Models;
+using F1Simulator.Models.Models.CompetitionService;
 using F1Simulator.Utils.DatabaseConnectionFactory;
 using Microsoft.Data.SqlClient;
 

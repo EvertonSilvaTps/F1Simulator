@@ -96,5 +96,34 @@ namespace F1Simulator.TeamManagementService.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
+
+        [HttpGet("count")]
+        public async Task<ActionResult<int>> GetAllEngineersCountAsync()
+        {
+            try
+            {
+                var count = await _engineerService.GetAllEngineersCountAsync();
+
+                return StatusCode(StatusCodes.Status200OK, count);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return StatusCode(404, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
     }
 }

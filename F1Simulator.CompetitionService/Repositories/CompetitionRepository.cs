@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using F1Simulator.CompetitionService.Repositories.Interfaces;
 using F1Simulator.Models.DTOs.CompetitionService.Response;
-using F1Simulator.Models.Models;
+using F1Simulator.Models.Models.CompetitionService;
 using F1Simulator.Utils.DatabaseConnectionFactory;
 using Microsoft.Data.SqlClient;
 
@@ -212,7 +212,7 @@ namespace F1Simulator.CompetitionService.Repositories
                 var selectQuery = @"SELECT C.Name AS NameCircuit, C.Country AS CountryCircuit, R.[Round], S.[Year], C.LapsNumber 
                                     FROM Races R
                                     JOIN Circuits C ON R.CircuitId = C.Id
-                                    JOIN Season S ON R.SeasonId = S.Id";
+                                    JOIN Season S ON R.SeasonId = S.Id ORDER BY R.[Round] ASC";
 
                 var calendar = await _connection.QueryAsync<RaceResponseDTO>(selectQuery);
                 return calendar.ToList();

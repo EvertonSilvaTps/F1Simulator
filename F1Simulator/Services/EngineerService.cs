@@ -50,7 +50,7 @@ namespace F1Simulator.TeamManagementService.Services
                 if (engineersInCar.Count >= 2)
                     throw new InvalidOperationException("This car already has two engineers.");
 
-                if (engineersInCar.Any(e => e.EngineerSpecialization == engineerRequestDTO.EngineerSpecialization))
+                if (engineersInCar.Any(e => e.Specialization == engineerRequestDTO.EngineerSpecialization))
                     throw new InvalidOperationException("This car already has an engineer with this specialization.");
 
 

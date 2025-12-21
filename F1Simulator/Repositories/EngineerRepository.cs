@@ -28,8 +28,8 @@ namespace F1Simulator.TeamManagementService.Repositories
                     TeamId = engineer.TeamId,
                     CarId = engineer.CarId,
                     FirstName = engineer.FirstName,
-                    LastName = engineer.FullName,
-                    Specialization = engineer.EngineerSpecialization.ToString(),
+                    LastName = engineer.LastName,
+                    Specialization = engineer.Specialization.ToString(),
                     ExperienceFactor = engineer.ExperienceFactor
                 });
 
@@ -37,10 +37,10 @@ namespace F1Simulator.TeamManagementService.Repositories
                 {
                     EngineerId = engineer.EngineerId,
                     CarId = engineer.CarId,
-                    EngineerSpecialization = engineer.EngineerSpecialization,
+                    Specialization = engineer.Specialization,
                     ExperienceFactor = engineer.ExperienceFactor,
                     FirstName = engineer.FirstName,
-                    LastName = engineer.FullName,
+                    FullName = engineer.LastName,
                     TeamId = engineer.TeamId
                 };
                 return engineerResponse;
@@ -105,7 +105,7 @@ namespace F1Simulator.TeamManagementService.Repositories
         {
             try
             {
-                var sql = @"SELECT EngineerId, TeamId, CarId, FirstName, FullName, EngineerSpecialization, ExperienceFactor
+                var sql = @"SELECT EngineerId, TeamId, CarId, FirstName, LastName, Specialization, ExperienceFactor
                             FROM Engineers
                             WHERE CarId = @CarId";
 

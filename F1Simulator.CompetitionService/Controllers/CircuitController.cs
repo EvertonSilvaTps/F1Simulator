@@ -118,7 +118,7 @@ namespace F1Simulator.CompetitionService.Controllers
             try
             {
                 var circuit = await _circuitService.DeleteCircuitAsync(id);
-                return StatusCode(StatusCodes.Status200OK, circuit);
+                return StatusCode(StatusCodes.Status204NoContent);
             }
           
             catch (InvalidOperationException ex)
