@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using F1Simulator.CompetitionService.Exceptions;
 using F1Simulator.CompetitionService.Repositories.Interfaces;
 using F1Simulator.CompetitionService.Services.Interfaces;
 using F1Simulator.Models.DTOs.CompetitionService.Request;

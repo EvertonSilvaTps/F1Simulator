@@ -1,9 +1,6 @@
-﻿using F1Simulator.CompetitionService.Exceptions;
-using F1Simulator.CompetitionService.Services.Interfaces;
+﻿using F1Simulator.CompetitionService.Services.Interfaces;
 using F1Simulator.Models.DTOs.CompetitionService.Response;
-using F1Simulator.Models.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 
 namespace F1Simulator.CompetitionService.Controllers
 {
