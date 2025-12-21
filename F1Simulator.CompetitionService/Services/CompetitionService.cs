@@ -1,5 +1,4 @@
-﻿using F1Simulator.CompetitionService.Exceptions;
-using F1Simulator.CompetitionService.Repositories.Interfaces;
+﻿using F1Simulator.CompetitionService.Repositories.Interfaces;
 using F1Simulator.CompetitionService.Services.Interfaces;
 using F1Simulator.Models.DTOs.CompetitionService.Response;
 using F1Simulator.Models.DTOs.DriverDTO;
@@ -10,7 +9,6 @@ using F1Simulator.Models.Enums.CompetitionService;
 using F1Simulator.Models.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System;
 using System.Text;
 using System.Text.Json;
 
@@ -589,7 +587,7 @@ namespace F1Simulator.CompetitionService.Services
                 uint numeroMensagens = await channel.MessageCountAsync("RaceFinishedEvent");
                 if (numeroMensagens == 0)
                 {
-                    throw new BusinessException("Race results queue is empty");
+                    throw new ArgumentException("Race results queue is empty");
                 }
 
                 var results = new List<DriverToPublishDTO>();

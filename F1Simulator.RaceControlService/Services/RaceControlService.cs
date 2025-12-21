@@ -7,6 +7,7 @@ using F1Simulator.RaceControlService.Messaging.Interfaces;
 using F1Simulator.RaceControlService.Repositories.Interfaces;
 using F1Simulator.RaceControlService.Services.Interfaces;
 using System.Net;
+using System.Text.Json;
 
 namespace F1Simulator.RaceControlService.Services
 {
@@ -41,7 +42,7 @@ namespace F1Simulator.RaceControlService.Services
                 var responseCompetitionClient = await _competitionClient.GetAsync("races/inprogress");
 
                 if (responseCompetitionClient.StatusCode == HttpStatusCode.NotFound)
-                    throw new KeyNotFoundException(await responseCompetitionClient.Content.ReadAsStringAsync());
+                    await ProcessCompetitionClientRaceInProgressResponseNotFound(responseCompetitionClient);
 
                 if (responseCompetitionClient.StatusCode == HttpStatusCode.InternalServerError)
                     throw new Exception();
@@ -139,7 +140,7 @@ namespace F1Simulator.RaceControlService.Services
                 var responseCompetitionClient = await _competitionClient.GetAsync("races/inprogress");
 
                 if (responseCompetitionClient.StatusCode == HttpStatusCode.NotFound)
-                    throw new KeyNotFoundException(await responseCompetitionClient.Content.ReadAsStringAsync());
+                    await ProcessCompetitionClientRaceInProgressResponseNotFound(responseCompetitionClient);
 
                 if (responseCompetitionClient.StatusCode == HttpStatusCode.InternalServerError)
                     throw new Exception();
@@ -282,7 +283,7 @@ namespace F1Simulator.RaceControlService.Services
                 var responseCompetitionClient = await _competitionClient.GetAsync("races/inprogress");
 
                 if (responseCompetitionClient.StatusCode == HttpStatusCode.NotFound)
-                    throw new KeyNotFoundException(await responseCompetitionClient.Content.ReadAsStringAsync());
+                    await ProcessCompetitionClientRaceInProgressResponseNotFound(responseCompetitionClient);                
 
                 if (responseCompetitionClient.StatusCode == HttpStatusCode.InternalServerError)
                     throw new Exception();
@@ -328,7 +329,7 @@ namespace F1Simulator.RaceControlService.Services
                 var responseCompetitionClient = await _competitionClient.GetAsync("races/inprogress");
 
                 if (responseCompetitionClient.StatusCode == HttpStatusCode.NotFound)
-                    throw new KeyNotFoundException(await responseCompetitionClient.Content.ReadAsStringAsync());
+                    await ProcessCompetitionClientRaceInProgressResponseNotFound(responseCompetitionClient);
 
                 if (responseCompetitionClient.StatusCode == HttpStatusCode.InternalServerError)
                     throw new Exception();
@@ -374,7 +375,7 @@ namespace F1Simulator.RaceControlService.Services
                 var responseCompetitionClient = await _competitionClient.GetAsync("races/inprogress");
 
                 if (responseCompetitionClient.StatusCode == HttpStatusCode.NotFound)
-                    throw new KeyNotFoundException(await responseCompetitionClient.Content.ReadAsStringAsync());
+                    await ProcessCompetitionClientRaceInProgressResponseNotFound(responseCompetitionClient);
 
                 if (responseCompetitionClient.StatusCode == HttpStatusCode.InternalServerError)
                     throw new Exception();
@@ -654,6 +655,15 @@ namespace F1Simulator.RaceControlService.Services
         {
             var pd = (ca * 0.4) + (cp * 0.4) - handicap + luckFactor;
             return Math.Round(pd, 3);
+        }
+
+        private async Task ProcessCompetitionClientRaceInProgressResponseNotFound(HttpResponseMessage responseMessage)
+        {
+            var content = await responseMessage.Content.ReadAsStringAsync();
+            using var jsonDoc = JsonDocument.Parse(content);
+            var message = jsonDoc.RootElement.GetProperty("message").GetString();
+
+            throw new KeyNotFoundException(message);
         }
     }
 }
