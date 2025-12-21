@@ -10,6 +10,7 @@ using F1Simulator.Models.Enums.CompetitionService;
 using F1Simulator.Models.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System;
 using System.Text;
 using System.Text.Json;
 
@@ -59,42 +60,42 @@ namespace F1Simulator.CompetitionService.Services
         {
             try
             {
-                // verifica se já existe uma temporada ativa, se existir, lança uma exceção própria
+                // verifica se já existe uma temporada ativa
                 var activeSeason = await _competitionRepository.GetCompetionActiveAsync();
                 if (activeSeason != null)
                 {
-                    throw new BusinessException("There is already a season in progress");
+                    throw new InvalidOperationException("There is already a season in progress");
                 }
 
-                // Verifica se existem 10 ou 11 equipes cadastradas, se não houver, lança uma exceção própria
+                // Verifica se existem 10 ou 11 equipes cadastradas, se não houver lança uma exceção 
                 var countTeams = await _httpGetTeamsClient.GetFromJsonAsync<int>("count");
                 if (countTeams < 10 || countTeams > 11)
                 {
-                    throw new BusinessException("The season cannot start due to a lack of teams.");
+                    throw new InvalidOperationException("The season cannot start due to a lack of teams.");
                 }
 
-                // Verifica se cada equipe possui 2 pilotos cadastrados, se não possuir, lança uma exceção própria
+                // Verifica se cada equipe possui 2 pilotos cadastrados, se não possuir lança uma exceção 
 
                 var countDrivers = await _httpGetDriversClient.GetFromJsonAsync<int>("count");
                 if (countDrivers < countTeams * 2)
                 {
-                    throw new BusinessException("The season cannot start due to a lack of drivers.");
+                    throw new InvalidOperationException("The season cannot start due to a lack of drivers.");
                 }
 
-                // verifica se cada piloto está associado a um carro, se não estiver, lança uma exceção própria
+                // verifica se cada piloto está associado a um carro, se não estiver lança uma exceção 
 
                 var countCars = await _httpGetCountCars.GetFromJsonAsync<List<CarResponseDTO>>("");
                 if (countCars == null || countCars.Count < countDrivers)
                 {
-                    throw new BusinessException("The season cannot start due to a lack of cars.");
+                    throw new InvalidOperationException("The season cannot start due to a lack of cars.");
                 }
 
-                // verifica se existem 24 circuitos ativos, se não houver, lança uma exceção própria
+                // verifica se existem 24 circuitos ativos, se não houver, lança uma exceção 
 
                 int countCircuits = await _circuitRepository.CircuitsActivatesAsync();
                 if (countCircuits < 24)
                 {
-                    throw new BusinessException("The season cannot start due to a lack of circuits.");
+                    throw new InvalidOperationException("The season cannot start due to a lack of circuits.");
                 }
 
                 // se todas as validações forem passadas, importar as equipes e pilotos e circuits
@@ -135,6 +136,9 @@ namespace F1Simulator.CompetitionService.Services
                     Year = season.Year,
                     IsActive = season.IsActive
                 };
+            }catch(InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
             catch (Exception ex)
             {
@@ -152,45 +156,52 @@ namespace F1Simulator.CompetitionService.Services
                 var activeSeason = await _competitionRepository.GetCompetionActiveAsync();
                 if (activeSeason == null)
                 {
-                    throw new BusinessException("There is no active season to start the race.");
+                    throw new InvalidOperationException("There is no active season to start the race.");
+                }
+
+                // validar round informado
+
+                if(round < 0 || round > 24)
+                {
+                    throw new ArgumentException("The reported Round must be between 1 and 24.");
                 }
 
                 // buscar a corrida do round informado
 
                 var race = await _competitionRepository.GetRaceCompleteByIdAndSeasonIdAsync(round, activeSeason.Id);
-                if (race == null)
+                if (race is null)
                 {
-                    return null;
+                    throw new KeyNotFoundException("No races were found matching the reported round number."); 
                 }
 
                 // validar se a corrida já foi finalizada ou está em andamento
                 if (race.Status == RaceStatus.Finished.ToString())
                 {
-                    throw new BusinessException("The race with this round has already finished.");
+                    throw new InvalidOperationException("The race with this round has already finished.");
                 }
 
                 if (race.Status == RaceStatus.InProgress.ToString())
                 {
-                    throw new BusinessException("The race with this round is already underway.");
+                    throw new InvalidOperationException("The race with this round is already underway.");
                 }
 
-                // Verifica se a corrida de round -1 foi finalizada, se não for lançar uma exceção própria
+                // Verifica se a corrida de round -1 foi finalizada
 
                 if (round > 1)
                 {
                     var previousRace = await _competitionRepository.GetRaceCompleteByIdAndSeasonIdAsync(round - 1, activeSeason.Id);
                     if (previousRace == null || previousRace.Status != RaceStatus.Finished.ToString())
                     {
-                        throw new BusinessException("The previous race has not yet finished.");
+                        throw new InvalidOperationException("The previous race has not yet finished.");
                     }
                 }
 
-                // verificar se há alguma corrida em andamento na temporada ativa, se houver, lançar uma exceção própria
+                // verificar se há alguma corrida em andamento na temporada ativa, se houver, lançar uma exceção
 
                 var racesInProgress = await _competitionRepository.ExistRaceInProgressAsync(activeSeason.Id);
                 if (racesInProgress)
                 {
-                    throw new BusinessException("There is already a race in progress in the current season.");
+                    throw new InvalidOperationException("There is already a race in progress in the current season.");
                 }
 
                 // se passar por tudo, iniciar a corrida mudando o status para "InProgress"
@@ -199,6 +210,18 @@ namespace F1Simulator.CompetitionService.Services
 
                 // retornar as informações da corrida iniciada
                 return await _competitionRepository.GetRaceByIdAsync(race.Id);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                throw new KeyNotFoundException(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
             catch (Exception ex)
             {
@@ -213,14 +236,18 @@ namespace F1Simulator.CompetitionService.Services
             {
                 // buscar a temporada ativa
                 var activeSeason = await _competitionRepository.GetCompetionActiveAsync();
-                if (activeSeason == null)
+                if (activeSeason is null)
                 {
-                    throw new BusinessException("There is no active season.");
+                    throw new InvalidOperationException("There is no active season.");
                 }
 
                 var response = await _competitionRepository.GetRaceWithCircuitAsync();
 
                 return response;
+            }
+            catch(InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
             catch (Exception ex)
             {
@@ -235,25 +262,29 @@ namespace F1Simulator.CompetitionService.Services
             {
                 // buscar a temporada ativa
                 var activeSeason = await _competitionRepository.GetCompetionActiveAsync();
-                if (activeSeason == null)
+                if (activeSeason is null)
                 {
-                    throw new BusinessException("There is no active season.");
+                    throw new InvalidOperationException("There is no active season.");
                 }
 
                 // buscar a corrida em andamento
                 var raceInProgress = await _competitionRepository.GetRaceInProgressAsync();
-                if (raceInProgress == null)
+                if (raceInProgress is null)
                 {
-                    throw new BusinessException("There is no active race.");
+                    throw new InvalidOperationException("There is no active race.");
                 }
 
                 // vericar se t1 já foi atualizado
                 if (raceInProgress.T1)
                 {
-                    throw new BusinessException("Free practice 1 has already been completed.");
+                    throw new InvalidOperationException("Free practice 1 has already been completed.");
                 }
 
                 await _competitionRepository.UpdateRaceT1Async();
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
             catch (Exception ex)
             {
@@ -269,31 +300,35 @@ namespace F1Simulator.CompetitionService.Services
             {
                 // buscar a temporada ativa
                 var activeSeason = await _competitionRepository.GetCompetionActiveAsync();
-                if (activeSeason == null)
+                if (activeSeason is null)
                 {
-                    throw new BusinessException("There is no active season.");
+                    throw new InvalidOperationException("There is no active season.");
                 }
 
                 // buscar a corrida em andamento
                 var raceInProgress = await _competitionRepository.GetRaceInProgressAsync();
-                if (raceInProgress == null)
+                if (raceInProgress is null)
                 {
-                    throw new BusinessException("There is no active race.");
+                    throw new InvalidOperationException("There is no active race.");
                 }
 
                 // verificar se o T1 já foi atualizado
                 if (!raceInProgress.T1)
                 {
-                    throw new BusinessException("Free practice 1 must be completed before Free practice 2.");
+                    throw new InvalidOperationException("Free practice 1 must be completed before Free practice 2.");
                 }
 
                 // vericar se t2 já foi atualizado
                 if (raceInProgress.T2)
                 {
-                    throw new BusinessException("Free practice 2 has already been completed.");
+                    throw new InvalidOperationException("Free practice 2 has already been completed.");
                 }
 
                 await _competitionRepository.UpdateRaceT2Async();
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
             catch (Exception ex)
             {
@@ -310,31 +345,35 @@ namespace F1Simulator.CompetitionService.Services
             {
                 // buscar a temporada ativa
                 var activeSeason = await _competitionRepository.GetCompetionActiveAsync();
-                if (activeSeason == null)
+                if (activeSeason is null)
                 {
-                    throw new BusinessException("There is no active season.");
+                    throw new InvalidOperationException("There is no active season.");
                 }
 
                 // buscar a corrida em andamento
                 var raceInProgress = await _competitionRepository.GetRaceInProgressAsync();
-                if (raceInProgress == null)
+                if (raceInProgress is null)
                 {
-                    throw new BusinessException("There is no active race.");
+                    throw new InvalidOperationException("There is no active race.");
                 }
 
                 // verificar se o T2 já foi atualizado
                 if (!raceInProgress.T2)
                 {
-                    throw new BusinessException("Free practice 2 must be completed before Free practice 3.");
+                    throw new InvalidOperationException("Free practice 2 must be completed before Free practice 3.");
                 }
 
                 // vericar se t3 já foi atualizado
                 if (raceInProgress.T3)
                 {
-                    throw new BusinessException("Free practice 3 has already been completed.");
+                    throw new InvalidOperationException("Free practice 3 has already been completed.");
                 }
 
                 await _competitionRepository.UpdateRaceT3Async();
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
             catch (Exception ex)
             {
@@ -350,31 +389,35 @@ namespace F1Simulator.CompetitionService.Services
             {
                 // buscar a temporada ativa
                 var activeSeason = await _competitionRepository.GetCompetionActiveAsync();
-                if (activeSeason == null)
+                if (activeSeason is null)
                 {
-                    throw new BusinessException("There is no active season.");
+                    throw new InvalidOperationException("There is no active season.");
                 }
 
                 // buscar a corrida em andamento
                 var raceInProgress = await _competitionRepository.GetRaceInProgressAsync();
-                if (raceInProgress == null)
+                if (raceInProgress is null)
                 {
-                    throw new BusinessException("There is no active race.");
+                    throw new InvalidOperationException("There is no active race.");
                 }
 
                 // verificar se o T3 já foi atualizado
                 if (!raceInProgress.T3)
                 {
-                    throw new BusinessException("Free practice 3 must be completed before Qualifier.");
+                    throw new InvalidOperationException("Free practice 3 must be completed before Qualifier.");
                 }
 
                 // vericar se Qualifier já foi atualizado
                 if (raceInProgress.Qualifier)
                 {
-                    throw new BusinessException("Qualifier has already been completed.");
+                    throw new InvalidOperationException("Qualifier has already been completed.");
                 }
 
                 await _competitionRepository.UpdateRaceQualifierAsync();
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
             catch (Exception ex)
             {
@@ -390,31 +433,35 @@ namespace F1Simulator.CompetitionService.Services
             {
                 // buscar a temporada ativa
                 var activeSeason = await _competitionRepository.GetCompetionActiveAsync();
-                if (activeSeason == null)
+                if (activeSeason is null)
                 {
-                    throw new BusinessException("There is no active season.");
+                    throw new InvalidOperationException("There is no active season.");
                 }
 
                 // buscar a corrida em andamento
                 var raceInProgress = await _competitionRepository.GetRaceInProgressAsync();
-                if (raceInProgress == null)
+                if (raceInProgress is null)
                 {
-                    throw new BusinessException("There is no active race.");
+                    throw new InvalidOperationException("There is no active race.");
                 }
 
                 // verificar se Qualifier já foi atualizado
                 if (!raceInProgress.Qualifier)
                 {
-                    throw new BusinessException("Qualifier must be completed before Race.");
+                    throw new InvalidOperationException("Qualifier must be completed before Race.");
                 }
 
                 // vericar se Race já foi atualizado
                 if (raceInProgress.RaceFinal)
                 {
-                    throw new BusinessException("Race has already been completed");
+                    throw new InvalidOperationException("Race has already been completed");
                 }
 
                 await _competitionRepository.UpdateRaceRaceAsync();
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
             catch (Exception ex)
             {
@@ -431,9 +478,9 @@ namespace F1Simulator.CompetitionService.Services
                 // verificar se existe uma temporada ativa
 
                 var activeSeason = await _competitionRepository.GetCompetionActiveAsync();
-                if (activeSeason == null)
+                if (activeSeason is null)
                 {
-                    throw new BusinessException("There is no active season.");
+                    throw new InvalidOperationException("There is no active season.");
                 }
 
 
@@ -453,6 +500,10 @@ namespace F1Simulator.CompetitionService.Services
 
                 return driverStandingResponse;
             }
+            catch(InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in GetDriverStanding in CompetitionService");
@@ -467,9 +518,9 @@ namespace F1Simulator.CompetitionService.Services
                 // verificar se existe uma temporada ativa
 
                 var activeSeason = await _competitionRepository.GetCompetionActiveAsync();
-                if (activeSeason == null)
+                if (activeSeason is null)
                 {
-                    throw new BusinessException("There is no active season.");
+                    throw new InvalidOperationException("There is no active season.");
                 }
 
 
@@ -489,6 +540,10 @@ namespace F1Simulator.CompetitionService.Services
 
                 return teamStandingResponse;
             }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in GetTeamStanding in CompetitionService");
@@ -502,11 +557,15 @@ namespace F1Simulator.CompetitionService.Services
             {
                 // verificar se existe uma temporada ativa
                 var activeSeason = await _competitionRepository.GetCompetionActiveAsync();
-                if (activeSeason == null)
+                if (activeSeason is null)
                 {
-                    throw new BusinessException("There is no active season.");
+                    throw new InvalidOperationException("There is no active season.");
                 }
                 return await _competitionRepository.GetRacesAsync();
+            }
+            catch(InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
             catch (Exception ex)
             {
@@ -514,7 +573,6 @@ namespace F1Simulator.CompetitionService.Services
                 throw;
             }
         }
-
 
         private async Task<List<DriverToPublishDTO>> ConsumeRaceResultsAsync()
         {
@@ -584,15 +642,15 @@ namespace F1Simulator.CompetitionService.Services
             {
                 // buscar a temporada ativa
                 var activeSeason = await _competitionRepository.GetCompetionActiveAsync();
-                if (activeSeason == null)
+                if (activeSeason is null)
                 {
-                    throw new BusinessException("There is no active season.");
+                    throw new InvalidOperationException("There is no active season.");
                 }
                 // buscar a corrida em andamento
                 var raceInProgress = await _competitionRepository.GetRaceInProgressAsync();
-                if (raceInProgress == null)
+                if (raceInProgress is null)
                 {
-                    throw new BusinessException("There is no active race to end.");
+                    throw new InvalidOperationException("There is no active race to end.");
                 }
 
                 // Consume da fila para processar os resultados da corrida
@@ -617,17 +675,13 @@ namespace F1Simulator.CompetitionService.Services
                     teamsUpdate = UpdateTeams(teams, drivers);
                 }
 
-                // enviar as listas de classificação para o banco e subescrever 
+                // enviar as listas de classificação para o banco e sobrescrever               
 
-                var race = await _competitionRepository.GetRaceInProgressAsync();
-                if (race is null)
-                    throw new BusinessException("There isn't a race in progress!");
-
-                var season = await _competitionRepository.GetCompetionActiveAsync();
-                if (season is null)
-                    throw new BusinessException("There isn't a season active!");
-
-                await _competitionRepository.EndRaceAsync(driversUpdate, teamsUpdate, season, race);
+                await _competitionRepository.EndRaceAsync(driversUpdate, teamsUpdate, activeSeason, raceInProgress);
+            }
+            catch(InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
             catch (Exception ex)
             {
@@ -669,21 +723,21 @@ namespace F1Simulator.CompetitionService.Services
             {
                 // verificar se tem um season ativa 
                 var activeSeason = await _competitionRepository.GetCompetionActiveAsync();
-                if (activeSeason == null)
+                if (activeSeason is null)
                 {
-                    throw new BusinessException("There is no active season.");
+                    throw new InvalidOperationException("There is no active season.");
                 }
 
                 // buscar a corrida round 24
                 var race24 = await _competitionRepository.GetLastRaceRoundAsync();
                 if (race24 is null)
                 {
-                    throw new BusinessException("error in searching for sequence race 24.");
+                    throw new KeyNotFoundException("error in searching for sequence race 24.");
                 }
 
                 if(race24.Status != "Finished")
                 {
-                    throw new BusinessException("There are still races to be held.");
+                    throw new InvalidOperationException("There are still races to be held.");
                 }
 
                 var driverStanding = await GetDriverStandingAsync();
@@ -697,6 +751,15 @@ namespace F1Simulator.CompetitionService.Services
                 };
 
                 return standingsResponse;
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                throw new KeyNotFoundException(ex.Message);
             }
             catch (Exception ex)
             {
