@@ -1,0 +1,751 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: TeamManagementService
+meta:
+  id: wrk_d504428a51dc4e1882eb384fd12c4ad4
+  created: 1766173723797
+  modified: 1766342541853
+  description: ""
+collection:
+  - name: TeamManagementService
+    meta:
+      id: fld_cde9c8e9146b445f994ccd86ea71bffa
+      created: 1766186496645
+      modified: 1766186496645
+      sortKey: -1766186496645
+      description: ""
+    children:
+      - name: Engineer
+        meta:
+          id: fld_14506c553889494ebd4357ead430ebe6
+          created: 1766074210388
+          modified: 1766186517173
+          sortKey: -1766186517150
+          description: ""
+        children:
+          - url: "{{url_engineer}}"
+            name: Criar engenheiro
+            meta:
+              id: req_a0040165bf5148cf918565a2872597cf
+              created: 1766074212401
+              modified: 1766342386793
+              isPrivate: false
+              description: ""
+              sortKey: -1766142253934
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                 "TeamId": "44DE7380-5486-4057-A413-6F0A55B3C9F7",
+                	"CarId": "7627439F-9D2F-4394-AD14-F7D451F72661",
+                	"FirstName": "Hywel",
+                	"FullName": "Thomas",
+                	"specialization": "Cp"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            authentication:
+              type: none
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{url_engineer}}"
+            name: Buscar todos os engenheiros
+            meta:
+              id: req_232b06f5f13d43c586b50f347ca64483
+              created: 1766090306880
+              modified: 1766192206674
+              isPrivate: false
+              description: ""
+              sortKey: -1766142254034
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{url_engineer}}/AA0088C1-74DA-4E34-A8D5-76EF41784BBC"
+            name: Buscar engenheiro por id
+            meta:
+              id: req_50eeeea5e48a46c4b6a12cce38c067ab
+              created: 1766142897307
+              modified: 1766183183614
+              isPrivate: false
+              description: ""
+              sortKey: -1766142897307
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Driver
+        meta:
+          id: fld_d925a88ec31a4232be6666f923ff0f59
+          created: 1766142262721
+          modified: 1766186528295
+          sortKey: -1766186517250
+          description: ""
+        children:
+          - url: "{{url_driver}}"
+            name: Criar piloto
+            meta:
+              id: req_09ab17a7978a4d2fb2d32d0af53f27df
+              created: 1766142434876
+              modified: 1766342430257
+              isPrivate: false
+              description: ""
+              sortKey: -1766142434876
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"TeamId":"44DE7380-5486-4057-A413-6F0A55B3C9F7",
+                	"CarId": "7627439F-9D2F-4394-AD14-F7D451F72661",
+                    "FirstName": "Andrea",
+                    "FullName": "Andrea Kimi Antonelli",
+                	"DriverNumber": 27,
+                	"WeightKg": 70
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{url_driver}}"
+            name: Buscar todos os pilotos
+            meta:
+              id: req_3250476d6139477b82cd41371a16c1f5
+              created: 1766142836368
+              modified: 1766192197071
+              isPrivate: false
+              description: ""
+              sortKey: -1766142836368
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{url_driver}}/ACA6DF7F-E945-41AE-9424-CB924C83ADBF"
+            name: Buscar piloto por id
+            meta:
+              id: req_6d346089813c487d8b947ed00cb15e72
+              created: 1766142863114
+              modified: 1766183167977
+              isPrivate: false
+              description: ""
+              sortKey: -1766142863114
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{url_driver}}/4FAE499C-61E7-437C-9A77-23C62EFBC72D"
+            name: Modificar handicap
+            meta:
+              id: req_2b37b2c8429b4b1fb98c786b3ecdb0db
+              created: 1766142878775
+              modified: 1766340702473
+              isPrivate: false
+              description: ""
+              sortKey: -1766142878775
+            method: PATCH
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"Handicap": 85
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.url_driver_race }}"
+            name: Buscar todos os pilotos para a Corrida
+            meta:
+              id: req_843c57bb79c247e1b7b2284b4a79faeb
+              created: 1766163111503
+              modified: 1766340639554
+              isPrivate: false
+              description: ""
+              sortKey: -1766163111503
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.url_driver_count }}"
+            name: Contar pilotos
+            meta:
+              id: req_05468c1f604b4c00b5ce059f68fb6ee2
+              created: 1766340722782
+              modified: 1766340956842
+              isPrivate: false
+              description: ""
+              sortKey: -1766340722782
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.2.0
+                description: ""
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Car
+        meta:
+          id: fld_55a21845edeb4451acebb939b4d02298
+          created: 1766142302963
+          modified: 1766338004595
+          sortKey: -1766186517550
+          description: ""
+        children:
+          - url: "{{url_car}}"
+            name: Criar carro
+            meta:
+              id: req_412566797e06454b944f1c52e1127386
+              created: 1766142307562
+              modified: 1766180000283
+              isPrivate: false
+              description: ""
+              sortKey: -1766142406804
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"TeamId": "44DE7380-5486-4057-A413-6F0A55B3C9F7",
+                	"WeightKg": 620,
+                	"Speed": 312
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{url_car}}"
+            name: Buscar todos os carros
+            meta:
+              id: req_87fdbfdd35ad4dc1ae9c29c36a7e6011
+              created: 1766142495454
+              modified: 1766192189810
+              isPrivate: false
+              description: ""
+              sortKey: -1766142406904
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{url_car}}/{{ _.car_id01 }}"
+            name: Buscar carro por id
+            meta:
+              id: req_06fdf5ea940c40958c59a9934316358d
+              created: 1766142509460
+              modified: 1766182797042
+              isPrivate: false
+              description: ""
+              sortKey: -1766142509460
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{url_car}}/{{ _.car_id01 }}/coefficients"
+            name: Modificar coeficientes
+            meta:
+              id: req_18d5cf1b0be5443fa4c3f8c7b3ccc5d7
+              created: 1766142654632
+              modified: 1766341442830
+              isPrivate: false
+              description: ""
+              sortKey: -1766142509560
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"Ca": 7.244,
+                	"Cp": 5.701
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.url_car }}/{{ _.car_id01 }}/model"
+            name: Modificar modelo
+            meta:
+              id: req_5180cb4f6a4249d9a09b309505f3af66
+              created: 1766340072073
+              modified: 1766340890950
+              isPrivate: false
+              description: ""
+              sortKey: -1766340072073
+            method: PATCH
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"Model": "FER13"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/12.2.0
+                description: ""
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Boss
+        meta:
+          id: fld_5a28a8cd8e384474ba66bc3e640aa6d6
+          created: 1766338041295
+          modified: 1766338045690
+          sortKey: -1766186517650
+          description: ""
+        children:
+          - url: "{{ _.url_boss_count }}/3FA0D846-EB9A-4DF4-BC07-5AA593844194"
+            name: Contar chefes do time
+            meta:
+              id: req_d928a1a4ccdd43bb8fe6940a660dfb82
+              created: 1766107066249
+              modified: 1766342214698
+              isPrivate: false
+              description: ""
+              sortKey: -1766338386356
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.1.0
+                description: ""
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.url_boss }}"
+            name: Criar chefe
+            meta:
+              id: req_1dde507f68fa489188f4543fe2063987
+              created: 1766107583184
+              modified: 1766341500558
+              isPrivate: false
+              description: ""
+              sortKey: -1766338386456
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"teamId" : "3fa0d846-eb9a-4df4-bc07-5aa593844194",
+                	"firstName" : "Toto",
+                	"lastName" : "22",
+                	"age" : 42
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/12.1.0
+                description: ""
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.url_boss }}"
+            name: Buscar todos os chefes
+            meta:
+              id: req_a119fcfd55174387891f9e5c7ba63e77
+              created: 1766107753104
+              modified: 1766341392405
+              isPrivate: false
+              description: ""
+              sortKey: -1766338386556
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.1.0
+                description: ""
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.url_boss_team }}"
+            name: Buscar chefes por times
+            meta:
+              id: req_396cd6e4baac4646a53b2cee2c286816
+              created: 1766109718722
+              modified: 1766342157463
+              isPrivate: false
+              description: ""
+              sortKey: -1766338386656
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.1.0
+                description: ""
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.url_boss_count }}"
+            name: Contar chefes
+            meta:
+              id: req_c2886e7ac38d4b4ba79e74aefa78a1fb
+              created: 1766287822044
+              modified: 1766342083086
+              isPrivate: false
+              description: ""
+              sortKey: -1766338386256
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.1.0
+                description: ""
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Team
+        meta:
+          id: fld_38d22f671a4943ccbd34c2a943299b31
+          created: 1766339464333
+          modified: 1766339563926
+          sortKey: -1766339464333
+          description: ""
+        children:
+          - url: "{{ _.url_team_count }}"
+            name: Contar todos os times
+            meta:
+              id: req_c8b47ddaa4044773832f7195518d2501
+              created: 1766014382279
+              modified: 1766342311102
+              isPrivate: false
+              description: ""
+              sortKey: -1766340020878
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.1.0
+                description: ""
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.url_team }}"
+            name: Criar time
+            meta:
+              id: req_e801ac64c49744978582f8a4ac631d9e
+              created: 1766015046192
+              modified: 1766342282544
+              isPrivate: false
+              description: ""
+              sortKey: -1766340020978
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "name": "Mercedes",
+                  "country": "Germany"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/12.1.0
+                description: ""
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.url_team }}"
+            name: Buscar todos os times
+            meta:
+              id: req_36c04b53bd57475f8b7bde991f5a04c6
+              created: 1766016718911
+              modified: 1766342294024
+              isPrivate: false
+              description: ""
+              sortKey: -1766340020778
+            method: GET
+            body:
+              mimeType: application/json
+              text: |-
+                	{
+                		"name": "RedBull",
+                		"country": "Alemã"
+                	}
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/12.1.0
+                description: ""
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.url_team }}/7c3f8706-b7c4-4152-ba6d-c40de77b0cc6"
+            name: Buscar time por id
+            meta:
+              id: req_de140f6f871f4d5eb1e13048efd49a40
+              created: 1766018335714
+              modified: 1766342329246
+              isPrivate: false
+              description: ""
+              sortKey: -1766340021078
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.1.0
+                description: ""
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.url_team_name }}/Mercedes"
+            name: Buscar time por nome
+            meta:
+              id: req_773a0ee831504e91aa5ed079c847db9d
+              created: 1766018432963
+              modified: 1766342358322
+              isPrivate: false
+              description: ""
+              sortKey: -1766340021178
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.1.0
+                description: ""
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.url_team_update }}/f68b2757-4e14-410d-aa29-76629a3ff639"
+            name: Modificar pais
+            meta:
+              id: req_66314bcb69494894b5f8b374d4edef0a
+              created: 1766066153374
+              modified: 1766342260555
+              isPrivate: false
+              description: ""
+              sortKey: -1766340021278
+            method: PATCH
+            body:
+              mimeType: application/json
+              text: '"Suíça"'
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/12.1.0
+                description: ""
+                disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_264cec1c86f143d8be31d4c3b4cd844d
+    created: 1766074202909
+    modified: 1766074202909
+environments:
+  name: Base Environment
+  meta:
+    id: env_870c4149675e44328697c2f87ae9afd4
+    created: 1766074202907
+    modified: 1766340851621
+    isPrivate: false
+  data:
+    url_car: https://localhost:8001/api/car
+    car_id01: 938CC7DC-937C-4E1B-A5D1-9A8CAB0559D0
+    url_driver: https://localhost:8001/api/driver
+    url_driver_race: https://localhost:8001/api/driver/race
+    url_driver_count: https://localhost:8001/api/driver/count
+    url_engineer: https://localhost:8001/api/engineer
+    url_boss: https://localhost:8001/api/boss
+    url_boss_team: https://localhost:8001/api/boss/boss-team
+    url_boss_count: https://localhost:8001/api/boss/count
+    url_team: https://localhost:8001/api/team
+    url_team_count: https://localhost:8001/api/team/count
+    url_team_name: https://localhost:8001/api/team/name
+    url_team_update: https://localhost:8001/api/team/update
+  subEnvironments:
+    - name: Team Enviroment
+      meta:
+        id: env_e4ad8cf787264189bb5720d8dbec5b34
+        created: 1766286770909
+        modified: 1766287594748
+        isPrivate: false
+        sortKey: 1766286770909
+      data:
+        base_url_team: https://localhost:8001/api/team
+        base_url_team_update: https://localhost:8001/api/team/update
+        base_url_team_name: https://localhost:8001/api/team/name
+        base_url_team_count: https://localhost:8001/api/team/count
+    - name: New Environment
+      meta:
+        id: env_e7e3fe9a383144a584d14c63bd08d226
+        created: 1766287878848
+        modified: 1766287878848
+        isPrivate: false
+        sortKey: 1766287878848
