@@ -23,7 +23,7 @@ namespace F1Simulator.TeamManagementService.Controllers
             try
             {
                 var count = await _bossService.GetBossByTeamCountAsync(teamId);
-                return StatusCode(201, count); ;
+                return StatusCode(201, count);
             }
             catch (ArgumentException ex)
             {
