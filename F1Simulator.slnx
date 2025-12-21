@@ -10,20 +10,20 @@
     <File Path="engineering-service.yaml" />
   </Folder>
   <Folder Name="/docs/Insomnia/RaceControlService/">
-    <File Path="../../../Downloads/racecontrol-service.yaml" />
+    <File Path="racecontrol-service.yaml" />
   </Folder>
   <Folder Name="/docs/Insomnia/TeamManagementService/" />
   <Folder Name="/docs/READMES/">
     <File Path="documentacao-f1simulator.md" />
   </Folder>
   <Folder Name="/docs/READMES/EngineeringService/">
-    <File Path="README.md" />
+    <File Path="EngineeringService.md" />
   </Folder>
   <Folder Name="/docs/READMES/RaceControlService/">
-    <File Path="../../../Downloads/RaceControlService.md" />
+    <File Path="RaceControlService.md" />
   </Folder>
   <Folder Name="/docs/READMES/TeamManegementService/">
-    <File Path="../../../OneDrive/Área de Trabalho/READMETeamManegementService.zip" />
+    <File Path="TeamManagementService.md" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="F1Simulator.CompetitionService/F1Simulator.CompetitionService.csproj">
