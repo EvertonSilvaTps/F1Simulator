@@ -665,6 +665,61 @@ namespace F1Simulator.CompetitionService.Services
         }
 
 
+        public async Task<StandingsResponseDTO> EndSeasonAsync()
+        {
+            try
+            {
+                // verificar se tem um season ativa 
+                var activeSeason = await _competitionRepository.GetCompetionActiveAsync();
+                if (activeSeason == null)
+                {
+                    throw new BusinessException("There is no active season.");
+                }
+
+                // buscar a corrida round 24
+                var race24 = await _competitionRepository.GetRaceRound24Async();
+                if (race24 is null)
+                {
+                    throw new BusinessException("error in searching for sequence race 24.");
+                }
+
+                if(race24.Status != "Finished")
+                {
+                    throw new BusinessException("There are still races to be held.");
+                }
+
+                await _competitionRepository.EndSeasonAsync(activeSeason.Id);
+                var driverStanding = await GetDriverStandingAsync();
+                var teamStanding = await GetTeamStandingAsync();
+
+                var standingsResponse = new StandingsResponseDTO
+                {
+                    DriverStandings = driverStanding,
+                    TeamStandings = teamStanding
+                };
+
+                return standingsResponse;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in FinalStnadingsAsync in CompetitionService");
+                throw;
+            }
+
+        }
+        public async Task<List<SeasonResponseDTO>> GetAllSeasonsAsync()
+        {
+            try
+            {
+                return await _competitionRepository.GetAllSeasonsAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in GetSeasonsAsync in CompetitionService");
+                throw;
+            }
+        }
+
 
 
 

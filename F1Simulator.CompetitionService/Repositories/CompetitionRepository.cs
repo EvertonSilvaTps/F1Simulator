@@ -453,5 +453,53 @@ namespace F1Simulator.CompetitionService.Repositories
             }
         }
 
+        public async Task EndSeasonAsync(Guid seasonId)
+        {
+            try
+            {
+                var updateQuery = @"UPDATE Season
+                                    SET IsActive = 1
+                                    WHERE Id = @SeasonId";
+                await _connection.ExecuteAsync(updateQuery, new { SeasonId = seasonId });
+            }
+            catch (SqlException ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<SeasonResponseDTO>> GetAllSeasonsAsync()
+        {
+            try
+            {
+                var selectQuery = @"SELECT Id, [Year], IsActive
+                               FROM Season";
+                var season = await _connection.QueryAsync<SeasonResponseDTO>(selectQuery);
+
+                return season.ToList();
+            }
+            catch (SqlException ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<RaceCompleteResponseDTO?> GetRaceRound24Async()
+        {
+            try
+            {
+                var selectQuery = @"SELECT Id, [Round], [Status], SeasonId, CircuitId, T1, T2, T3, Qualifier
+                                   FROM Races
+                                   WHERE [Round] = 24";
+
+                return await _connection.QueryFirstOrDefaultAsync<RaceCompleteResponseDTO>(selectQuery);
+
+            }
+            catch (SqlException)
+            {
+
+                throw;
+            }
+        }
     }
 }
