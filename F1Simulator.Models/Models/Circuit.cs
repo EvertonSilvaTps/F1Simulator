@@ -1,6 +1,6 @@
 ﻿namespace F1Simulator.Models.Models
 {
-    public class Circuit
+    public class Circuit   // Tests
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; }
