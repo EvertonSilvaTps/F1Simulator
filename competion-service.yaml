@@ -1,0 +1,409 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Competition Service - Competition
+meta:
+  id: wrk_5527d8ef42ea43819382b5b8c5368edd
+  created: 1766064689684
+  modified: 1766064689684
+  description: ""
+collection:
+  - name: Competition
+    meta:
+      id: fld_2f6ee8b152e648e2849b015902400e2d
+      created: 1766322377184
+      modified: 1766322377184
+      sortKey: -1766322377184
+      description: ""
+    children:
+      - url: "{{ _.Competition }}/season/start"
+        name: Start new Season
+        meta:
+          id: req_def742134fff4440b99baaf53d6d2523
+          created: 1766064702099
+          modified: 1766322411789
+          isPrivate: false
+          description: ""
+          sortKey: -1766322383745
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.Competition }}/season/active"
+        name: return Season in progress
+        meta:
+          id: req_244e856f29f94808b58d2a1b48859d21
+          created: 1766251266209
+          modified: 1766322409259
+          isPrivate: false
+          description: ""
+          sortKey: -1766322383645
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.Competition }}/races/round:{1}/start"
+        name: start race by round
+        meta:
+          id: req_d43c8703ea4647c8a485355e34d2fc39
+          created: 1766321561884
+          modified: 1766322406953
+          isPrivate: false
+          description: ""
+          sortKey: -1766322383545
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.Competition }}/races/inprogress"
+        name: return race in progress
+        meta:
+          id: req_80cdd43486544c6bbc0253608e2d2f52
+          created: 1766321678735
+          modified: 1766322404826
+          isPrivate: false
+          description: ""
+          sortKey: -1766322383445
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.Competition }}/driverstanding"
+        name: return drivers standing of season in progress
+        meta:
+          id: req_ac00515cc2ba4ec2b27c2c2754565960
+          created: 1766321734371
+          modified: 1766322402585
+          isPrivate: false
+          description: ""
+          sortKey: -1766322383345
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.Competition }}/teamstanding"
+        name: retunr teams standing of season in progress
+        meta:
+          id: req_a5604531bb354ebf9e6fb77661271202
+          created: 1766321809188
+          modified: 1766322400338
+          isPrivate: false
+          description: ""
+          sortKey: -1766322383245
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.Competition }}/calendar"
+        name: return sequence of race order by round
+        meta:
+          id: req_738e0d1698d342d28e633177f142c68c
+          created: 1766321868600
+          modified: 1766322398485
+          isPrivate: false
+          description: ""
+          sortKey: -1766322383145
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.Competition }}/endrace"
+        name: finishes the race in progress
+        meta:
+          id: req_35e4f9b6e4ee464e9822cbbe40dd0140
+          created: 1766321934106
+          modified: 1766322396194
+          isPrivate: false
+          description: ""
+          sortKey: -1766322383045
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.Competition }}/endseason"
+        name: finishes the season in progress
+        meta:
+          id: req_acafc6513103401a80e875d94dcda832
+          created: 1766322028057
+          modified: 1766322382880
+          isPrivate: false
+          description: ""
+          sortKey: -1766322382845
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.Competition }}/seasons"
+        name: Get all seasons simulate
+        meta:
+          id: req_9f5bc2c23c6a4b0da41798204631c894
+          created: 1766322086310
+          modified: 1766322387390
+          isPrivate: false
+          description: ""
+          sortKey: -1766322382945
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Circuit
+    meta:
+      id: fld_fba582cbdd324e2e8ca75523fecc2209
+      created: 1766322545777
+      modified: 1766322545777
+      sortKey: -1766322545777
+      description: ""
+    children:
+      - url: "{{ _.Circuit }}/create"
+        name: Create one circuit
+        meta:
+          id: req_dbe203dffa2941e18605fb4f19481401
+          created: 1766322553259
+          modified: 1766322657369
+          isPrivate: false
+          description: ""
+          sortKey: -1766322561909
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.Circuit }}/create/circuits"
+        name: Create multiple circuits
+        meta:
+          id: req_4b63a8d9670a434b8c3f0b8a3c6f99c7
+          created: 1766322665045
+          modified: 1766322995651
+          isPrivate: false
+          description: ""
+          sortKey: -1766322562009
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.Circuit }}"
+        name: return all circuits
+        meta:
+          id: req_e75421acb0534292a164d0de6350231b
+          created: 1766322771182
+          modified: 1766322997225
+          isPrivate: false
+          description: ""
+          sortKey: -1766322562109
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.Circuit }}/{{% faker 'guid' %}"
+        name: return a circuit by id
+        meta:
+          id: req_8f5d57cb556a4a0ab6c449fa6789f37c
+          created: 1766322805911
+          modified: 1766323002368
+          isPrivate: false
+          description: ""
+          sortKey: -1766322562209
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.Circuit }}/{{% faker 'guid' %}"
+        name: delete a circuit by id
+        meta:
+          id: req_53cbc491dc24404faacf93cebaa2745b
+          created: 1766322909104
+          modified: 1766323004383
+          isPrivate: false
+          description: ""
+          sortKey: -1766322562309
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.Circuit }}/{{% faker 'guid' %}"
+        name: Update a circuit by id
+        meta:
+          id: req_5d7abe5f46c84254af8baa1879fb0a3f
+          created: 1766322957244
+          modified: 1766323005911
+          isPrivate: false
+          description: ""
+          sortKey: -1766322562409
+        method: PUT
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_5867868a780b473086d373d3c98a72ae7d234d0d
+    created: 1766064689689
+    modified: 1766064689689
+environments:
+  name: Base Environment
+  meta:
+    id: env_5867868a780b473086d373d3c98a72ae7d234d0d
+    created: 1766064689686
+    modified: 1766322618333
+    isPrivate: false
+  data:
+    Competition: https://localhost:5001/api/competition
+    Circuit: https://localhost:5001/api/circuit

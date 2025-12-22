@@ -1,11 +1,14 @@
 <Solution>
   <Folder Name="/docs/">
     <File Path="documentacao-f1simulator.md" />
+    <File Path="fluxo-apresentação-f1simulator.png" />
   </Folder>
   <Folder Name="/docs/Insomnia/">
     <File Path="README_TEMPLATE.md" />
   </Folder>
-  <Folder Name="/docs/Insomnia/CompettionService/" />
+  <Folder Name="/docs/Insomnia/CompettionService/">
+    <File Path="competion-service.yaml" />
+  </Folder>
   <Folder Name="/docs/Insomnia/EngineeringService/">
     <File Path="engineering-service.yaml" />
   </Folder>
@@ -19,7 +22,7 @@
     <File Path="documentacao-f1simulator.md" />
   </Folder>
   <Folder Name="/docs/READMES/CompetitionService/">
-    <File Path="../../../Downloads/CompetitionService.md" />
+    <File Path="CompetitionService.md" />
   </Folder>
   <Folder Name="/docs/READMES/EngineeringService/">
     <File Path="EngineeringService.md" />
@@ -29,6 +32,10 @@
   </Folder>
   <Folder Name="/docs/READMES/TeamManegementService/">
     <File Path="TeamManagementService.md" />
+  </Folder>
+  <Folder Name="/docs/ScripSQL/">
+    <File Path="SQL-Create-F1.sql" />
+    <File Path="SQL-Populate-F1.sql" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="F1Simulator.CompetitionService/F1Simulator.CompetitionService.csproj">
